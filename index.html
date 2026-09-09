@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CCNA Full Exam Simulator - 37 Topics</title>
+  <title>CCNA Interactive Exam Simulator</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
@@ -179,6 +179,27 @@
       color: #1e293b;
     }
 
+    /* עיצוב מעבדת Packet Tracer */
+    .pt-diagram {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 14px;
+      margin: 14px 0;
+      direction: ltr;
+    }
+
+    .pt-bar {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #64748b;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
     .options-list {
       display: flex;
       flex-direction: column;
@@ -283,8 +304,8 @@
 
 <header>
   <div>
-    <h1>CCNA Mega Exam Simulator</h1>
-    <p>37 נושאים עם מעל 1,100 שאלות ייחודיות</p>
+    <h1>CCNA Interactive Exam Simulator</h1>
+    <p>סילבוס 37 נושאים + מעבדות Packet Tracer</p>
   </div>
   <div class="timer-badge" id="timer-display">--:--</div>
 </header>
@@ -292,13 +313,13 @@
 <div class="container">
   <div id="setup-view">
     <div class="setup-section">
-      <h3>1. כמות שאלות במבחן (ללא חזרות וכפילויות)</h3>
+      <h3>1. כמות שאלות במבחן (שאלות ייחודיות ללא חזרות)</h3>
       <div class="grid-options">
         <label class="radio-label"><input type="radio" name="q-count" value="10"> 10 שאלות</label>
         <label class="radio-label"><input type="radio" name="q-count" value="25"> 25 שאלות</label>
         <label class="radio-label"><input type="radio" name="q-count" value="50"> 50 שאלות</label>
-        <label class="radio-label"><input type="radio" name="q-count" value="100" checked> 100 שאלות (מבחן הסמכה מלא)</label>
-        <label class="radio-label"><input type="radio" name="q-count" value="all"> כל השאלות שנבחרו</label>
+        <label class="radio-label"><input type="radio" name="q-count" value="100"> 100 שאלות</label>
+        <label class="radio-label"><input type="radio" name="q-count" value="all" checked> כל השאלות של הנושאים שנבחרו</label>
       </div>
     </div>
 
@@ -351,10 +372,483 @@
   </div>
 </div>
 
-<!-- טעינת מאגר השאלות העצום מקובץ נפרד -->
-<script src="questions.js"></script>
-
 <script>
+const pingMyNetworkTopics = [
+  "1. Getting Started",
+  "2. LAN Basics",
+  "3. Switching Internals",
+  "4. Network Models & Architectures",
+  "5. Cabling, Power & Interfaces",
+  "6. Network Communication",
+  "7. VLAN",
+  "8. Inter-VLAN Routing",
+  "9. EtherChannel",
+  "10. STP Basics",
+  "11. STP Security",
+  "12. IPv4 Subnetting",
+  "13. Routing Fundamentals",
+  "14. Static Routing",
+  "15. Gateway Redundancy (FHRP)",
+  "16. OSPF Fundamentals",
+  "17. OSPF Operations",
+  "18. IPv6 Overview",
+  "19. DNS",
+  "20. DHCP",
+  "21. NAT",
+  "22. VRF",
+  "23. ACLs",
+  "24. Device Access Security",
+  "25. Layer 2 Security",
+  "26. Discovery Protocols",
+  "27. Monitoring & Time",
+  "28. SNMP",
+  "29. Device Management",
+  "30. QoS Fundamentals",
+  "31. QoS Mechanisms",
+  "32. Wireless Fundamentals",
+  "33. RF & 802.11 Frames",
+  "34. Cisco Wireless Architecture",
+  "35. Wireless Security",
+  "36. Network Design",
+  "37. Automation and Programmability"
+];
+
+// מאגר שאלות מקיף ומעבדות טופולוגיה Packet Tracer
+const rawQuestionBank = [
+  // מעבדה 1: מעבדת STP & EtherChannel בטופולוגיה גרפית
+  {
+    topicId: 10,
+    q: "נתח את תרחיש ה-Packet Tracer להלן: מה יהיה תפקיד הממשק Gi0/3 במתג SW-B (המסומן בנורית כתומה)?",
+    diagramHtml: `
+      <div class="pt-diagram">
+        <div class="pt-bar">
+          <span>Packet Tracer Topology: Lab-STP-EtherChannel.pkt</span>
+          <span>Logical STP View</span>
+        </div>
+        <svg viewBox="0 0 650 170" width="100%" height="170" xmlns="http://www.w3.org/2000/svg">
+          <line x1="160" y1="65" x2="480" y2="65" stroke="#0284c7" stroke-width="4" stroke-dasharray="6,3" />
+          <line x1="160" y1="80" x2="480" y2="80" stroke="#0284c7" stroke-width="4" stroke-dasharray="6,3" />
+          <ellipse cx="320" cy="72.5" rx="45" ry="16" fill="none" stroke="#0369a1" stroke-width="1.5" />
+          <text x="320" y="76" font-size="10" font-weight="bold" fill="#0369a1" text-anchor="middle">Port-channel 1 (Po1)</text>
+          <line x1="160" y1="125" x2="480" y2="125" stroke="#64748b" stroke-width="2" />
+          <text x="320" y="120" font-size="9" fill="#64748b" text-anchor="middle">Gi0/3 (Single Trunk)</text>
+          <circle cx="170" cy="72.5" r="5" fill="#22c55e" />
+          <circle cx="170" cy="125" r="5" fill="#22c55e" />
+          <circle cx="470" cy="72.5" r="5" fill="#22c55e" />
+          <circle cx="470" cy="125" r="5" fill="#f59e0b" />
+          <g transform="translate(40, 35)">
+            <rect width="110" height="105" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+            <text x="55" y="40" font-weight="bold" font-size="11" fill="#0f172a" text-anchor="middle">SW-A (Root)</text>
+            <text x="55" y="60" font-size="9" fill="#0369a1" text-anchor="middle">Priority: 4096</text>
+            <text x="55" y="80" font-size="8" fill="#64748b" text-anchor="middle">Gi0/1, Gi0/2, Gi0/3</text>
+          </g>
+          <g transform="translate(490, 35)">
+            <rect width="110" height="105" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+            <text x="55" y="40" font-weight="bold" font-size="11" fill="#0f172a" text-anchor="middle">SW-B</text>
+            <text x="55" y="60" font-size="9" fill="#475569" text-anchor="middle">Priority: 32768</text>
+            <text x="55" y="80" font-size="8" fill="#64748b" text-anchor="middle">RP: Po1</text>
+          </g>
+        </svg>
+      </div>
+    `,
+    correctText: "Alternate / Blocked Port (נחסם על ידי STP כדי למנוע לולאה)",
+    wrongOptions: [
+      "Root Port (נבחר כנתיב העיקרי ל-Root Bridge)",
+      "Designated Port המעביר תנועה באופן שוטף",
+      "Disabled Port שהושבת עקב שגיאת חומרה"
+    ],
+    expSimple: "מכיוון שהערוץ המאוגד Port-channel 1 כבר נבחר לנתיב הראשי והזול אל ה-Root Bridge, הקו הבודד Gi0/3 יוצר לולאה ולכן STP נועל אותו.",
+    expAnalogy: "תחשוב על שער כניסה אחורי בבניין שננעל במפתח ברגע שהשער הראשי הרחב פתוח, כדי שאנשים לא יסתובבו במעגלים בחצר.",
+    expOneLine: "ממשק Gi0/3 מועבר למצב חסימה (Alternate/Blocked) מכיוון ש-Port-channel 1 מספק נתיב עדיף בעל Cost נמוך יותר."
+  },
+
+  // מעבדה 2: בחירות OSPF ברשת Broadcast
+  {
+    topicId: 16,
+    q: "בהתבסס על טופולוגיית Packet Tracer שלפניך: איזה נתב ייבחר לשמש כ-Designated Router (DR)?",
+    diagramHtml: `
+      <div class="pt-diagram">
+        <div class="pt-bar">
+          <span>Packet Tracer Topology: Lab-OSPF-Election.pkt</span>
+          <span>Broadcast Multi-Access Area 0</span>
+        </div>
+        <svg viewBox="0 0 650 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+          <rect x="260" y="70" width="130" height="30" rx="4" fill="#334155" />
+          <text x="325" y="90" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Switch-Core</text>
+          <line x1="120" y1="50" x2="260" y2="80" stroke="#334155" stroke-width="2" />
+          <line x1="325" y1="135" x2="325" y2="100" stroke="#334155" stroke-width="2" />
+          <line x1="530" y1="50" x2="390" y2="80" stroke="#334155" stroke-width="2" />
+          <circle cx="120" cy="50" r="4.5" fill="#22c55e" />
+          <circle cx="260" cy="80" r="4.5" fill="#22c55e" />
+          <circle cx="325" cy="135" r="4.5" fill="#22c55e" />
+          <circle cx="325" cy="100" r="4.5" fill="#22c55e" />
+          <circle cx="530" cy="50" r="4.5" fill="#22c55e" />
+          <circle cx="390" cy="80" r="4.5" fill="#22c55e" />
+          <g transform="translate(100, 45)">
+            <circle r="25" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+            <text y="4" font-size="11" font-weight="bold" fill="#1e3a8a" text-anchor="middle">R1</text>
+            <text y="38" font-size="8.5" fill="#1e293b" text-anchor="middle">Prio: 255 | RID: 1.1.1.1</text>
+          </g>
+          <g transform="translate(325, 145)">
+            <circle r="25" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+            <text y="4" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">R2</text>
+            <text y="38" font-size="8.5" fill="#1e293b" text-anchor="middle">Prio: 100 | RID: 2.2.2.2</text>
+          </g>
+          <g transform="translate(550, 45)">
+            <circle r="25" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+            <text y="4" font-size="11" font-weight="bold" fill="#991b1b" text-anchor="middle">R3</text>
+            <text y="38" font-size="8.5" fill="#dc2626" font-weight="bold" text-anchor="middle">Prio: 0 | RID: 3.3.3.3</text>
+          </g>
+        </svg>
+      </div>
+    `,
+    correctText: "הנתב R1 מכיוון שיש לו את ה-Interface Priority הגבוה ביותר (255)",
+    wrongOptions: [
+      "הנתב R3 מכיוון שיש לו את ה-Router ID הגבוה ביותר (3.3.3.3)",
+      "הנתב R2 מכיוון שהוא מחובר לפורט המרכזי במתג",
+      "אף נתב לא ייבחר מכיוון שברשתות מסוג זה אין בחירות DR"
+    ],
+    expSimple: "בבחירות OSPF, הקריטריון הראשון הוא עדיפות הממשק (Priority). לנתב R1 יש את המספר הגבוה ביותר (255), ולכן הוא מנצח מיד עוד לפני שבודקים את ה-Router ID.",
+    expAnalogy: "תחשוב על בחירות שבהן אדם עם 255 קולות מנצח מתמודד עם 100 קולות, בעוד שמתמודד שהחליט לא להשתתף (0 קולות) נפסל מיד.",
+    expOneLine: "הנתב R1 ייבחר ל-DR בזכות ערך ה-Priority המרבי (255) המהווה את שלב ההכרעה הראשון בבחירות OSPF."
+  },
+
+  // שאלות עומק יסודיות לכל 37 הנושאים
+  {
+    topicId: 1,
+    q: "באיזה מצב פקודה (Mode) ב-CLI של סיסקו נמצאים כאשר שורת הפקודה מציגה Router(config)#?",
+    correctText: "מצב הגדרות כללי (Global Configuration Mode)",
+    wrongOptions: ["מצב משתמש בסיסי (User EXEC Mode)", "מצב מנהל מתקדם (Privileged EXEC Mode)", "מצב הגדרת ממשק (Interface Configuration)"],
+    expSimple: "המצב שבו מבצעים הגדרות שמשפיעות על כל המכשיר כולו, כמו שינוי שם הנתב או קביעת סיסמאות.",
+    expAnalogy: "תחשוב על כניסה ללוח החשמל הראשי של כל הבניין שממנו אפשר להשפיע על המבנה כולו.",
+    expOneLine: "הסימון (config)# מעיד על Global Configuration Mode שבו מחילים הגדרות מערכתיות על המכשיר."
+  },
+  {
+    topicId: 2,
+    q: "איזה רכיב רשת מפריד בין Broadcast Domains כברירת מחדל?",
+    correctText: "נתב (Router) הפועל בשכבה 3",
+    wrongOptions: ["מתג (Switch) סטנדרטי הפועל בשכבה 2", "רכזת (Hub) פשוטה הפועלת בשכבה 1", "מגבר אות אופטי (Repeater)"],
+    expSimple: "נתב אינו מעביר הודעות שידור המוניות (Broadcast) מרשת אחת לרשת אחרת, ובכך תוחם את הרעש.",
+    expAnalogy: "תחשוב על קיר אטום לרעש שמונע מצעקות בתוך חדר ישיבות אחד להפריע לאנשים בחדר הסמוך.",
+    expOneLine: "נתבים מפרידים מתחמי שידור כברירת מחדל ואינם מעבירים פאקטות Broadcast בין ממשקים."
+  },
+  {
+    topicId: 3,
+    q: "כיצד מתג (Switch) לומד כתובות MAC חדשות ומזין אותן לטבלת ה-CAM שלו?",
+    correctText: "על ידי בדיקת כתובת ה-MAC של המקור (Source MAC) בכל מסגרת שנכנסת",
+    wrongOptions: ["על ידי בחינת כתובת ה-MAC של היעד (Destination MAC)", "באמצעות שאילתות DNS תקופתיות", "באמצעות סריקת ARP יזומה כל 60 שניות"],
+    expSimple: "המתג מסתכל מאיזה שקע פיזי נכנסה ההודעה ומי השולח, ורושם לעצמו את הזיהוי בפנקס.",
+    expAnalogy: "תחשוב על פקיד קבלה שרושם את שמו של כל אורח שנכנס בדלת לצד מספר החדר שממנו הגיע.",
+    expOneLine: "מתג לומד כתובות MAC באופן דינמי על ידי רישום כתובת המקור המשויכת לפורט הקליטה."
+  },
+  {
+    topicId: 4,
+    q: "באיזו שכבה במודל ה-OSI מתבצעת חלוקת הנתונים למקטעים (Segmentation) ובקרת זרימה (Flow Control)?",
+    correctText: "שכבה 4 (Transport Layer)",
+    wrongOptions: ["שכבה 2 (Data Link Layer)", "שכבה 3 (Network Layer)", "שכבה 7 (Application Layer)"],
+    expSimple: "שכבה 4 מפרקת קבצים גדולים לחתיכות קטנות שמתאימות למעבר ברשת ומוודאת שהן מגיעות בקצב הנכון.",
+    expAnalogy: "תחשוב על פירוק ארון בגדים גדול לחלקים שטוחים ואריזתם בקרטונים ממוספרים לפני העמסה למשאית.",
+    expOneLine: "שכבת התעבורה (Transport) אחראית על חלוקת הנתונים למקטעים וניהול בקרת זרימה מקצה לקצה."
+  },
+  {
+    topicId: 5,
+    q: "מהו התקן המאפשר אספקת חשמל על גבי כבלי רשת (PoE+) בהספק של עד 30W לפורט?",
+    correctText: "תקן IEEE 802.3at",
+    wrongOptions: ["תקן IEEE 802.3af (המספק עד 15.4W)", "תקן IEEE 802.1Q (לתיוג VLAN)", "תקן IEEE 802.3ad (לאיגוד קישורים)"],
+    expSimple: "תקן מתקדם המעביר מתח חשמלי חזק יותר על אותו כבל רשת להפעלת מצלמות אבטחה וטלפונים כבדים.",
+    expAnalogy: "תחשוב על שדרוג שקע חשמלי פשוט לשקע כוח שמסוגל להפעיל מכשירים שצורכים יותר אנרגיה.",
+    expOneLine: "תקן IEEE 802.3at (PoE+) מספק עד 30W ומאפשר הזנת מכשירי קצה תובעניים ללא חיבור חשמל נפרד."
+  },
+  {
+    topicId: 6,
+    q: "מה מכיל שדה ה-FCS (Frame Check Sequence) בסיום מסגרת Ethernet?",
+    correctText: "ערך CRC של 4 בתים שנועד לאמת את שלמות הנתונים ולזהות שיבושי ביטים",
+    wrongOptions: ["כתובת ה-IP של שער ברירת המחדל", "מזהה ה-VLAN של מסגרת הנתונים", "חותמת זמן של שליחת הפאקטה"],
+    expSimple: "חישוב מתמטי שמוודא שאף ביט בכבל לא התהפך או שובש במהלך השידור בגלל הפרעות חשמל.",
+    expAnalogy: "תחשוב על חתימה דיגיטלית של חבילת דואר שמאשרת שהחבילה הגיעה שלמה מבלי שמישהו פתח אותה בדרך.",
+    expOneLine: "שדה ה-FCS כולל חישוב CRC המאפשר למקבל לבדוק האם נפלו שגיאות בשידור המסגרת הפיזית."
+  },
+  {
+    topicId: 7,
+    q: "מה מאפיין תעבורה השייכת ל-Native VLAN בקו מסוג 802.1Q Trunk?",
+    correctText: "היא מועברת על גבי קו ה-Trunk ללא תג 802.1Q (Untagged)",
+    wrongOptions: ["היא מוצפנת בעזרת מפתח פרטי", "היא מוגבלת לקצב של 10Mbps בלבד", "היא נזרקת מיד על ידי המתג המקבל"],
+    expSimple: "מידע של הרשת הזו נשלח 'עירום' בלי שום תווית זיהוי נוספת, כדי להתאים למכשירים ישנים.",
+    expAnalogy: "תחשוב על ארגז מכתבים שבו כל מכתב רשמי מקבל בול צבעוני, חוץ ממכתבי ההנהלה שנשלחים במעטפה חלקה.",
+    expOneLine: "תעבורת Native VLAN מועברת בקו Trunk ללא שום תיוג 802.1Q לשם שמירה על תאימות לאחור."
+  },
+  {
+    topicId: 8,
+    q: "איזה רכיב משמש כ-Default Gateway עבור VLAN ספציפי במתג שכבה 3 (Multilayer Switch)?",
+    correctText: "ממשק וירטואלי מסוג SVI (Switched Virtual Interface)",
+    wrongOptions: ["ממשק פיזי במצב Access", "ממשק מסוג Loopback בלבד", "ערוץ Port-channel לוגי"],
+    expSimple: "כרטיס רשת פנימי ווירטואלי שמוגדר במתג ומעניק כתובת IP שדרכה כל המחשבים באותו VLAN מגיעים החוצה.",
+    expAnalogy: "תחשוב על דלת יציאה ייעודית בתוך כל מחלקה שמובילה ישירות למסדרון המרכזי של הבניין.",
+    expOneLine: "ממשק SVI מספק כתובת ניתוב לוגית בשכבה 3 עבור רשת וירטואלית שלמה במתג Multilayer."
+  },
+  {
+    topicId: 9,
+    q: "איזה שילוב מצבים בפרוטוקול LACP ימנע הקמה של ערוץ EtherChannel?",
+    correctText: "Passive מול Passive",
+    wrongOptions: ["Active מול Active", "Active מול Passive", "Desirable מול Auto"],
+    expSimple: "מצב פסיבי אומר 'אני רק ממתין שיפנו אליי'. אם שני הצדדים רק מחכים ואף אחד לא יוזם, הקו לא יוקם.",
+    expAnalogy: "תחשוב על שני אנשים בחדר שכל אחד מהם מחליט שהוא לא ידבר עד שהשני יגיד לו שלום קודם.",
+    expOneLine: "הגדרה של Passive בשני קצוות ה-LACP מונעת את הקמת ה-EtherChannel מכיוון שאף צד אינו יוזם משא ומתן."
+  },
+  {
+    topicId: 10,
+    q: "מהו ערך ה-Bridge Priority המוגדר כברירת מחדל בכל מתג ב-STP קלאסי (802.1D)?",
+    correctText: "32768",
+    wrongOptions: ["4096", "0", "65535"],
+    expSimple: "מספר העדיפות ההתחלתי שכל מתג מקבל כשהוא יוצא מהמפעל לבחירת ה-Root Bridge.",
+    expAnalogy: "תחשוב על נקודת פתיחה שווה של 50 נקודות שכל משתתף מקבל בתחילת משחק לפני שיש מנצח.",
+    expOneLine: "ערך העדיפות המוגדר כברירת מחדל ב-STP הוא 32768, וניתן לשינוי ידני בקפיצות של 4096."
+  },
+  {
+    topicId: 11,
+    q: "מה תפקידו של מנגנון BPDU Guard במתגי סיסקו?",
+    correctText: "השבתת פורט קצה והעברתו למצב err-disable ברגע שמתקבלת בו הודעת BPDU",
+    wrongOptions: ["הצפנת הודעות ה-BPDU בין מתגים", "האצת זמן המעבר ממצב Listening ל-Forwarding", "מניעת התקפות הצפת כתובות MAC"],
+    expSimple: "נועל מכנית שקע שמיועד למחשב אם מישהו מנסה לחבר אליו מתג בלתי מורשה שעלול ליצור לולאה.",
+    expAnalogy: "תחשוב על שער כניסה שנועד להולכי רגל שננעל באזעקה אם מישהו מנסה לדחוף דרכו טרקטור.",
+    expOneLine: "BPDU Guard מגן על פורטי גישה מפני חיבור לא מורשה של מתגים על ידי כיבוי הפורט בעת קבלת BPDU."
+  },
+  {
+    topicId: 12,
+    q: "כמה כתובות מחשב תקפות (Usable Hosts) קיימות בתת-רשת עם מסכה 255.255.255.240 (/28)?",
+    correctText: "14 כתובות",
+    wrongOptions: ["16 כתובות", "6 כתובות", "30 כתובות"],
+    expSimple: "יש 16 כתובות בסך הכל (2 בחזקת 4), ומפחיתים 2 (כתובת רשת וברודקאסט), כך שנשארות 14 כתובות למכשירים.",
+    expAnalogy: "תחשוב על בניין של 16 דירות, שבו הדירה הראשונה והאחרונה שמורות למשרדי תחזוקה ו-14 פנויות לדיירים.",
+    expOneLine: "מסכת רשת 28/ משאירה 4 ביטים למארחים ומספקת בדיוק 14 כתובות IP שמישות."
+  },
+  {
+    topicId: 13,
+    q: "כאשר נתב בוחן את טבלת הניתוב, איזה כלל מקבל את העדיפות העליונה להעברת הפאקטה?",
+    correctText: "התאמת הקידומת הארוכה ביותר (Longest Prefix Match)",
+    wrongOptions: ["ה-Administrative Distance הנמוך ביותר", "המטריקה הנמוכה ביותר", "המסלול שהוגדר ראשון כרונולוגית"],
+    expSimple: "הנתיב הספציפי והמפורט ביותר (עם מסכת הרשת הארוכה ביותר) ינצח תמיד, ללא קשר לשום מדד אחר.",
+    expAnalogy: "תחשוב על שליח שיש לו שתי כתובות: 'רחוב הרצל' ו'רחוב הרצל 42 דירה 3' – הוא ילך לפי הפירוט המדויק.",
+    expOneLine: "הכלל הראשון והקובע ביותר בטבלת הניתוב הוא בחירת המסלול בעל הקידומת הארוכה והספציפית ביותר."
+  },
+  {
+    topicId: 14,
+    q: "מה מאפיין נתיב סטטי צף (Floating Static Route)?",
+    correctText: "הוא מוגדר עם AD גבוה יותר מזה של הניתוב הראשי ומשמש כנתיב גיבוי שנכנס לפעולה רק בעת כשל",
+    wrongOptions: ["הוא מחליף כתובות IP באופן דינמי כל שעה", "הוא מוגדר ללא ציון Next-hop", "הוא משמש אך ורק לשליחת הודעות ברודקאסט"],
+    expSimple: "מסלול סודי שמחכה בצד ונכנס לעבודה רק כשהכבל הראשי נקרע והמסלול הראשי נעלם מהטבלה.",
+    expAnalogy: "תחשוב על גלגל רזרבי בתא המטען: לא נוסעים עליו בשגרה, אלא מרכיבים אותו רק כשיש פנצ'ר.",
+    expOneLine: "נתיב צף משמש לגיבוי באמצעות הגדרת מרחק מנהלי (AD) גבוה מזה של פרוטוקול הניתוב הראשי."
+  },
+  {
+    topicId: 15,
+    q: "בפרוטוקול HSRP, מה עושה הפקודה standby preempt על גבי הנתב?",
+    correctText: "מאפשרת לנתב בעל עדיפות עליונה לקחת בחזרה את תפקיד ה-Active ברגע שהוא מתאושש מתקלה",
+    wrongOptions: ["מכבה את נתב הגיבוי לחלוטין", "מקצה כתובת IP וירטואלית אוטומטית", "מבצעת חלוקת עומס אקטיבית בין הנתבים"],
+    expSimple: "מבטיחה שהמנהל הראשי יחזור לפקד מיד כשהוא חוזר מחופשת מחלה, ולא ישאיר את הסגן בפיקוד.",
+    expAnalogy: "תחשוב על קברניט ספינה שחוזר לקחת את ההגה מידי עוזר הקברניט ברגע שהוא מבריא.",
+    expOneLine: "פקודת Preempt מאפשרת לנתב ראשי להחזיר לעצמו את מעמד ה-Active לאחר שהתאושש מנפילה."
+  },
+  {
+    topicId: 16,
+    q: "כיצד מחושב ה-Cost של ממשק ב-OSPF כברירת מחדל בנתבי סיסקו?",
+    correctText: "Reference Bandwidth (100Mbps) חלקי רוחב הפס של הממשק",
+    wrongOptions: ["מספר הנתבים בדרך (Hop Count)", "זמן ההשהיה בלבד", "גודל ה-MTU חלקי 1500"],
+    expSimple: "ככל שהכבל מהיר יותר, התוצאה של החלוקה קטנה יותר – והראוטר מעדיף תמיד מסלול עם עלות נמוכה.",
+    expAnalogy: "תחשוב על בחירה בנסיעה בכביש אגרה רחב וריק לעומת דרך עפר משובשת: המסלול הנוח דורש פחות 'מאמץ'.",
+    expOneLine: "עלות OSPF מחושבת ביחס הפוך לרוחב הפס של הממשק מול רוחב פס הייחוס של הפרוטוקול."
+  },
+  {
+    topicId: 17,
+    q: "לאיזו כתובת Multicast שולחים נתבי OSPF שאינם DR (כלומר DROther) עדכוני LSA?",
+    correctText: "224.0.0.6 (All OSPF DR Routers)",
+    wrongOptions: ["224.0.0.5 (All OSPF Routers)", "224.0.0.1", "255.255.255.255"],
+    expSimple: "ערוץ שידור ייעודי שבו רק המנהל (DR) והסגן שלו (BDR) מקשיבים לדיווחים משאר הנתבים.",
+    expAnalogy: "תחשוב על תיבת פניות סגורה שרק למנהל המשרד ולסגנו יש מפתח לפתוח ולקרוא את מה שנכנס אליה.",
+    expOneLine: "נתבי DROther מדווחים לעבר 224.0.0.6, וה-DR מפיץ את המידע לכולם לעבר 224.0.0.5."
+  },
+  {
+    topicId: 18,
+    q: "איזה סוג של כתובת IPv6 מתחיל בקידומת fe80::/10 ומשמש לתקשורת פנימית באותו מקטע בלבד?",
+    correctText: "כתובת Link-Local",
+    wrongOptions: ["כתובת Global Unicast", "כתובת Unique Local", "כתובת Multicast"],
+    expSimple: "כתובת מקומית שנוצרת מעצמה ומשמשת מכשירים לדבר זה עם זה על אותו כבל מבלי לצאת לאינטרנט.",
+    expAnalogy: "תחשוב על דיבור בלחישה בין שני אנשים באותו חדר: כולם בחדר שומעים, אך הקול לא יוצא החוצה.",
+    expOneLine: "כתובות Link-Local (בקידומת fe80::/10) מיועדות לתקשורת מקומית על גבי מקטע הרשת הישיר בלבד."
+  },
+  {
+    topicId: 19,
+    q: "איזה שירות רשת מתרגם שמות דומיין ידידותיים לכתובות IP לוגיות?",
+    correctText: "DNS (Domain Name System)",
+    wrongOptions: ["DHCP", "ARP", "NTP"],
+    expSimple: "ספר הטלפונים של האינטרנט שממיר שם כמו cisco.com למספר ה-IP האמיתי של השרת.",
+    expAnalogy: "תחשוב על חיפוש שם איש קשר באייפון: אתה מקליד 'יוסי' והטלפון מחייג את המספר הסודי שלו.",
+    expOneLine: "שרת ה-DNS ממפה שמות מחשב קריאים לאדם לכתובות IP ומאפשר גישה נוחה לשירותי רשת."
+  },
+  {
+    topicId: 20,
+    q: "איזה תהליך מייצגות האותיות DORA בפרוטוקול DHCP?",
+    correctText: "Discover, Offer, Request, Acknowledge",
+    wrongOptions: ["Drop, Open, Route, Allow", "Domain, Option, Route, Address", "Direct, Offer, Receive, Accept"],
+    expSimple: "ארבעת השלבים שבהם המחשב מגלה שרת, מקבל הצעה, מבקש אותה רשמית ומקבל אישור וכתובת IP.",
+    expAnalogy: "תחשוב על השכרת דירה: אתה מפרסם מודעה, מקבל הצעה מבעל הבית, חותם על חוזה ומקבל מפתח.",
+    expOneLine: "תהליך DORA הוא הסדר הרשמי שבו מתבצע משא ומתן בין לקוח לשרת DHCP לקבלת כתובת רשת."
+  },
+  {
+    topicId: 21,
+    q: "מהו היתרון המרכזי של PAT (Port Address Translation) הידוע גם כ-NAT Overload?",
+    correctText: "מאפשר למאות מחשבים פרטיים לגלוש באינטרנט באמצעות כתובת IP ציבורית אחת ומספרי פורט",
+    wrongOptions: ["מצפין את כל תעבורת הגלישה בחיבור", "מבטל את הצורך בשערי ברירת מחדל", "מגדיל את רוחב הפס הפיזי של הקו"],
+    expSimple: "חוסך כתובות ומאפשר לכל הטלפונים והמחשבים בבית לגלוש דרך כתובת ציבורית יחידה שהראוטר קיבל.",
+    expAnalogy: "תחשוב על חברה גדולה שבה לכל העובדים יש אותו מספר טלפון ראשי, אך לכל אחד יש שלוחה פנימית משלו.",
+    expOneLine: "PAT מאפשר שיתוף של כתובת ציבורית אחת בין התקנים רבים באמצעות בידול על בסיס מספרי Port."
+  },
+  {
+    topicId: 22,
+    q: "מה מאפשרת טכנולוגיית VRF (Virtual Routing and Forwarding) בנתבים?",
+    correctText: "קיום מספר טבלאות ניתוב נפרדות ומבודדות לחלוטין בתוך נתב פיזי יחיד",
+    wrongOptions: ["שכפול פיזי של ספקי הכוח בנתב", "הצפנת נתונים ברמת שכבה 2", "חיבור נקודות גישה אלחוטיות ללא כבלים"],
+    expSimple: "מאפשרת לפצל ראוטר אחד לכמה ראוטרים וירטואליים עצמאיים שלא רואים זה את זה, בדיוק כמו VLAN במתג.",
+    expAnalogy: "תחשוב על שתי חברות שיושבות באותו משרד אך לכל אחת כספת ומערכת ניירת נפרדת ואטומה לגמרי.",
+    expOneLine: "VRF יוצר מופעי ניתוב וירטואליים נפרדים באותו נתב ומאפשר שימוש בטבלאות ניתוב מבודדות."
+  },
+  {
+    topicId: 23,
+    q: "מה מבצע הכלל הסמוי (Implicit Deny Any) הנמצא בסיום כל רשימת ACL?",
+    correctText: "חוסם ומשליך (Drop) כל תעבורה שלא הותרה במפורש באחד הכללים הקודמים",
+    wrongOptions: ["מאשר את כל התעבורה הנותרת", "מפנה את הפאקטות לבדיקת אנטי-וירוס", "שולח התראה למנהל ומאפשר מעבר"],
+    expSimple: "חוק נסתר בסוף הרשימה שזורק לפח כל מה שלא קיבל אישור כניסה מפורש בחוקים שלמעלה.",
+    expAnalogy: "תחשוב על שומר במועדון: אם השם שלך לא מופיע ברשימת המוזמנים שבידו, אתה לא נכנס.",
+    expOneLine: "כלל ה-Implicit Deny חוסם כברירת מחדל כל תעבורה שלא קיבלה התאמה לחוק Permit מפורש."
+  },
+  {
+    topicId: 24,
+    q: "איזה פרוטוקול ניהול מרחוק מספק תקשורת מוצפנת ומאובטחת לשורת הפקודה בהשוואה ל-Telnet?",
+    correctText: "SSH (Secure Shell) הפועל בפורט TCP 22",
+    wrongOptions: ["Telnet הפועל בפורט 23", "HTTP הפועל בפורט 80", "TFTP הפועל בפורט 69"],
+    expSimple: "מערכת התחברות שנועלת את כל הסיסמאות וההקלדות בקוד מוצפן כדי שאי אפשר יהיה לרגל אחריך.",
+    expAnalogy: "תחשוב על שיחת קשר סודית בקוד מוצפן, לעומת שיחה בצעקות שכל מי שעומד במסדרון שומע.",
+    expOneLine: "פרוטוקול SSH מבטיח ניהול מאובטח של מכשירי רשת באמצעות הצפנת מידע ואימות חזק."
+  },
+  {
+    topicId: 25,
+    q: "איזה מנגנון אבטחה בשכבה 2 מאמת הודעות ARP מול טבלת ה-DHCP Snooping כדי למנוע התחזות?",
+    correctText: "DAI (Dynamic ARP Inspection)",
+    wrongOptions: ["Port Security", "BPDU Guard", "Root Guard"],
+    expSimple: "שוטר שבודק כל הודעת ARP ומוודא שאף מחשב לא משקר לגבי כתובת ה-MAC שלו כדי לגנוב מידע.",
+    expAnalogy: "תחשוב על פקיד בנק שבודק תעודת זהות ומשווה חתימה מול המערכת לפני שהוא מאשר משיכת כספים.",
+    expOneLine: "DAI מגן מפני מתקפות ARP Spoofing על ידי אימות מסגרות ה-ARP מול מסד נתונים אמין."
+  },
+  {
+    topicId: 26,
+    q: "מהו ההבדל המרכזי בין פרוטוקול CDP לפרוטוקול LLDP?",
+    correctText: "CDP הוא פרוטוקול קנייני של סיסקו, בעוד LLDP הוא תקן בינלאומי פתוח (IEEE 802.1AB)",
+    wrongOptions: ["CDP פועל בשכבה 3 ו-LLDP בשכבה 2", "LLDP פועל רק על גבי נתבים ולא על מתגים", "CDP אינו מגלה דגמי מכשירים"],
+    expSimple: "שניהם מגלים מי מחובר בקצה הכבל, אך CDP עובד רק בציוד סיסקו ו-LLDP עובד בכל הציוד בעולם.",
+    expAnalogy: "תחשוב על מטען של אפל (CDP) שמתאים רק למכשירי החברה, לעומת כבל Type-C אוניברסלי (LLDP).",
+    expOneLine: "CDP הוא פרוטוקול קנייני של סיסקו, בעוד LLDP הוא תקן תעשייתי פתוח לגילוי שכנים בשכבה 2."
+  },
+  {
+    topicId: 27,
+    q: "מדוע חשוב להגדיר שרת זמן מסוג NTP (Network Time Protocol) בכל מכשירי הרשת?",
+    correctText: "לסנכרון מדויק של חותמות הזמן ביומני הרישום (Syslog) לצורכי תחקור תקלות ואבטחה",
+    wrongOptions: ["כדי שהמתג ייכבה אוטומטית בלילה", "כדי להאיץ את מהירות הפורטים הפיזיים", "כדי לאפשר פעולת ניתוב ללא כתובות IP"],
+    expSimple: "דואג שלכל המכשירים ברשת יהיה בדיוק את אותו השעון עד רמת השנייה, כדי שנוכל לחקור פריצות ותקלות.",
+    expAnalogy: "תחשוב על חוקרי משטרה שמסנכרנים את השעונים בכל מצלמות האבטחה בעיר כדי לחבר ציר זמן מדויק.",
+    expOneLine: "פרוטוקול NTP מספק סנכרון שעונים אחיד המאפשר מעקב אמין ומדויק אחר יומני אירועים."
+  },
+  {
+    topicId: 28,
+    q: "איזה סוג הודעת SNMP נשלח באופן יזום ואוטומטי מהמכשיר המנוהל אל שרת הניטור בעת אירוע חריג?",
+    correctText: "הודעת SNMP Trap (או Inform)",
+    wrongOptions: ["הודעת SNMP Get", "הודעת SNMP Set", "הודעת SNMP Response"],
+    expSimple: "קריאת אזעקה שהמתג שולח למנהל הרשת בעצמו כשמשהו מתקלקל, בלי לחכות שישאלו אותו.",
+    expAnalogy: "תחשוב על גלאי עשן בבניין שמצפצף ושולח התראה מיד כשיש שריפה, בלי לחכות לביקורת תקופתית.",
+    expOneLine: "הודעות SNMP Trap מדווחות באופן יזום על תקלות ואירועים קריטיים מהמכשיר אל שרת ה-NMS."
+  },
+  {
+    topicId: 29,
+    q: "באיזה רכיב זיכרון נשמר קובץ ה-Startup-config במכשירי סיסקו?",
+    correctText: "בזיכרון NVRAM הבלתי-נדיף",
+    wrongOptions: ["בזיכרון RAM הנדיף", "בזיכרון ROM לקריאה בלבד", "במעבד הנתב (CPU)"],
+    expSimple: "רכיב זיכרון מיוחד שלא נמחק כשמכבים את המכשיר או כשיש הפסקת חשמל פתאומית.",
+    expAnalogy: "תחשוב על שמירת קובץ בכונן הבזק (דיסק-און-קי) לעומת מסמך פתוח על המסך שנעלם אם המחשב נכבה.",
+    expOneLine: "ה-NVRAM שומר את תצורת האתחול של המכשיר באופן קבוע גם לאחר ניתוק מקור הכוח."
+  },
+  {
+    topicId: 30,
+    q: "איזה פרמטר איכות שירות (QoS) מתאר את השונות והתנודתיות בזמני ההשהיה של פאקטות?",
+    correctText: "ריצוד / שיהוק (Jitter)",
+    wrongOptions: ["איבוד חבילות (Packet Loss)", "רוחב פס (Bandwidth)", "השהיה קבועה (Latency)"],
+    expSimple: "מצב שבו חבילות מידע מגיעות בקצב לא אחיד – חלק מהר וחלק לאט – וגורמות לקול בטלפון לקטוע.",
+    expAnalogy: "תחשוב על נהג שנוסע בגז וברקס לסירוגין במקום לנסוע במהירות חלקה וקבועה.",
+    expOneLine: "Jitter מודד את חוסר האחידות בזמני הגעת הפאקטות ופוגע באיכות שיחות קול ווידאו."
+  },
+  {
+    topicId: 31,
+    q: "מה מבצע מנגנון Traffic Shaping כאשר קצב התעבורה חורג מהסף שהוגדר?",
+    correctText: "משהה את הפאקטות העודפות בזיכרון תור (Buffer) ומשחרר אותן בהדרגה ובקצב אחיד",
+    wrongOptions: ["משליך (Drop) את הפאקטות העודפות באופן מיידי", "מכפיל את רוחב הפס הפיזי של הפורט", "חוסם את הפורט למשך 60 שניות"],
+    expSimple: "מחזיק את עודפי המידע בתור זמני ומשחרר אותם בצורה חלקה ויפה, בלי לזרוק אותם לפח.",
+    expAnalogy: "תחשוב על רמזור ביציאה מחניון שמווסת יציאה של מכונית אחת בכל כמה שניות כדי למנוע פקק בכביש.",
+    expOneLine: "Traffic Shaping מחליק עומסי תנועה באמצעות תורים וממתן את קצב השידור ללא איבוד פאקטות."
+  },
+  {
+    topicId: 32,
+    q: "אילו שלושה ערוצים בתדר האלחוטי 2.4GHz נחשבים לערוצים בלתי-חופפים (Non-overlapping)?",
+    correctText: "ערוצים 1, 6 ו-11",
+    wrongOptions: ["ערוצים 1, 2 ו-3", "ערוצים 2, 4 ו-8", "ערוצים 3, 6 ו-9"],
+    expSimple: "שלושת הערוצים היחידים בתדר הישן שיכולים לפעול זה לצד זה באותו מקום בלי להפריע זה לזה.",
+    expAnalogy: "תחשוב על שלושה נתיבי נסיעה מרוחקים עם שטח הפרדה רחב ביניהם שמונע חיכוך בין רכבים.",
+    expOneLine: "ערוצים 1, 6 ו-11 הם ערוצי ה-2.4GHz היחידים שאינם יוצרים הפרעות תדר הדדיות."
+  },
+  {
+    topicId: 33,
+    q: "מהו התפקיד של מסגרות מסוג Beacon ברשתות אלחוטיות בתקן 802.11?",
+    correctText: "שידור רציף המכריז על קיום הרשת, שם ה-SSID ויכולות האבטחה שלה להתקני הסביבה",
+    wrongOptions: ["הצפנת נתוני הגלישה של המשתמשים", "סנכרון טבלאות הניתוב בין נתבים", "הקצאת כתובות IP דינמיות"],
+    expSimple: "קריאה חוזרת שהאנטנה משדרת לאוויר כדי שכל הטלפונים בסביבה יידעו שהרשת קיימת ואיך קוראים לה.",
+    expAnalogy: "תחשוב על מגדלור שמנצנץ אור קבוע בלילה כדי להודיע לכל הספינות איפה החוף נמצא.",
+    expOneLine: "מסגרות Beacon משודרות על ידי נקודת הגישה כדי להכריז על מאפייני הרשת ולאפשר זיהוי והתחברות."
+  },
+  {
+    topicId: 34,
+    q: "באיזה פרוטוקול משתמשת נקודת גישה מסוג Lightweight (LAP) כדי לתקשר עם בקר האלחוט (WLC)?",
+    correctText: "מנהרת CAPWAP (Control and Provisioning of Wireless Access Points)",
+    wrongOptions: ["פרוטוקול OSPF", "פרוטוקול STP", "פרוטוקול VTP"],
+    expSimple: "צינור תקשורת מאובטח שמחבר את כל האנטנות בבניין ישירות למחשב הניהול המרכזי.",
+    expAnalogy: "תחשוב על שוטרי מקוף שמחוברים ישירות בקשר מאובטח למוקד הפיקוד הראשי בעיר.",
+    expOneLine: "פרוטוקול CAPWAP מנהל את התקשורת ומעביר נתונים ובקרה בין נקודות הגישה לבקר ה-WLC."
+  },
+  {
+    topicId: 35,
+    q: "איזה מנגנון אימות ב-WPA3 מחליף את מנגנון ה-Pre-Shared Key ומגן מפני מתקפות מילון?",
+    correctText: "SAE (Simultaneous Authentication of Equals)",
+    wrongOptions: ["WEP 128-bit", "TKIP", "WPA-Enterprise בלבד"],
+    expSimple: "שיטת כניסה חכמה שלא מאפשרת לתוקפים לנחש את הסיסמה של הרשת בבית באמצעות תוכנות פריצה.",
+    expAnalogy: "תחשוב על כספת דיגיטלית שנועלת את עצמה מיד ומחליפה קוד אם מישהו מנסה לנחש סיסמה פעמיים.",
+    expOneLine: "מנגנון SAE ב-WPA3 חוסם מתקפות ניחוש מילים לא מקוונות ומחזק את ההגנה ברשתות אלחוטיות."
+  },
+  {
+    topicId: 36,
+    q: "מה מאפיין את שכבת ה-Core במודל היררכי מסורתי של רשת ארגונית?",
+    correctText: "העברת תנועה מהירה במיוחד (High-speed switching) ללא סינון פאקטות או מניפולציות",
+    wrongOptions: ["חיבור משתמשי קצה ומדפסות באופן ישיר", "סינון תעבורה מעמיק בעזרת רשימות ACL מורכבות", "הפעלת שרתי DHCP בלבד"],
+    expSimple: "האוטוסטרדה הראשית של הרשת: התפקיד היחיד שלה הוא להעביר נתונים מקצה לקצה בשיא המהירות.",
+    expAnalogy: "תחשוב על כביש מהיר ללא רמזורים שנועד רק לנסיעה מהירה בין ערים גדולות.",
+    expOneLine: "שכבת ה-Core מספקת עמוד שדרה מהיר ואמין במיוחד להעברת תעבורה ללא השהיות מיותרות."
+  },
+  {
+    topicId: 37,
+    q: "מהו התפקיד של REST API בעולם אוטומציית הרשתות?",
+    correctText: "מתן ממשק תוכנה המאפשר לסקריפטים ואפליקציות לתקשר עם מכשירי רשת בפורמט JSON באמצעות בקשות HTTP",
+    wrongOptions: ["החלפת כבלי הנחושת הפיזיים", "חיבור ספקי כוח נוספים למכשיר", "הצפנת מסגרות Ethernet ברמת החומרה"],
+    expSimple: "גשר תוכנה שמאפשר לקוד מחשב לדבר ישירות עם הראוטר, לשאול שאלות ולשנות הגדרות אוטומטית.",
+    expAnalogy: "תחשוב על תפריט במסעדה והמלצר שמעביר את ההזמנה שלך ישירות למטבח ומחזיר לך את המנה המבוקשת.",
+    expOneLine: "REST APIs מאפשרים ניהול ותכנות אוטומטי של התקני רשת באמצעות פרוטוקול HTTP ופורמטים תקניים."
+  }
+];
+
 let currentQuestions = [];
 let userSelections = {};
 let timerInterval = null;
@@ -389,6 +883,7 @@ function shuffleArray(array) {
   return arr;
 }
 
+// ערבוב פנימי של מיקום התשובות בכל שאלה כדי שהתשובה הנכונה תופיע באותיות א', ב', ג' או ד' באקראי
 function processQuestionOptions(rawQ) {
   const allOpts = [rawQ.correctText, ...rawQ.wrongOptions];
   const shuffledOpts = shuffleArray(allOpts);
@@ -410,7 +905,7 @@ function startExam() {
     return;
   }
 
-  // שליפת שאלות ייחודיות מתוך המאגר המלא
+  // סינון שאלות ייחודיות מתוך המאגר ללא כפילויות
   let filtered = rawQuestionBank.filter(q => selectedTopics.includes(q.topicId));
 
   if (filtered.length === 0) {
@@ -421,7 +916,7 @@ function startExam() {
   const countChoice = document.querySelector('input[name="q-count"]:checked').value;
   let targetCount = countChoice === 'all' ? filtered.length : Math.min(parseInt(countChoice), filtered.length);
 
-  // ערבוב שאלות ללא שום כפילויות, וערבוב מיקום התשובות בכל שאלה
+  // ערבוב שאלות ללא חזרות וערבוב מיקום התשובות בכל שאלה
   currentQuestions = shuffleArray(filtered).slice(0, targetCount).map(processQuestionOptions);
   userSelections = {};
 
@@ -476,14 +971,19 @@ function renderExamQuestions() {
     card.className = 'question-card';
     card.id = `q-card-${index}`;
 
-    const topicTitle = pingMyNetworkTopics[item.topicId - 1] || "CCNA Module";
+    const topicTitle = pingMyNetworkTopics[item.topicId - 1] || "CCNA General";
 
     let html = `
       <div class="question-category">${topicTitle}</div>
       <div class="question-header">${index + 1}. ${item.q}</div>
-      <div class="options-list">
     `;
 
+    // הטמעת מעבדת טופולוגיה אם קיימת
+    if (item.diagramHtml) {
+      html += item.diagramHtml;
+    }
+
+    html += `<div class="options-list">`;
     const letters = ['א', 'ב', 'ג', 'ד'];
 
     item.options.forEach((opt, optIdx) => {
@@ -567,7 +1067,7 @@ function finishExam() {
       expEl.innerHTML = `<strong>הסבר של שורה אחת:</strong> ${q.expOneLine}`;
       expEl.style.display = 'block';
     } else {
-      // תשובה נכונה: כפתור לצפייה בהסבר תלת-שלבי מלא
+      // תשובה נכונה: כפתור לפתיחת הסבר מלא לפי שלושת השלבים
       actionArea.innerHTML = `<button type="button" class="btn-toggle-exp" id="btn-exp-${idx}" onclick="toggleFullExplanation(${idx})">הצג הסבר מלא</button>`;
       expEl.className = 'explanation-box';
       expEl.innerHTML = `
