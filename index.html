@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CCNA Simulator - PingMyNetwork Curriculum</title>
+  <title>CCNA Exam Simulator - PingMyNetwork</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
@@ -32,44 +32,47 @@
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      padding: 20px;
+      padding-bottom: 40px;
+    }
+
+    /* סרגל עליון מקובע - תמיד רואים את הטיימר */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--primary);
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    header h1 { font-size: 20px; font-weight: 800; }
+    header p { font-size: 13px; color: #bfdbfe; }
+
+    .timer-badge {
+      background: #0f172a;
+      border: 1px solid #3b82f6;
+      color: #38bdf8;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
     .container {
-      max-width: 1000px;
-      margin: 0 auto;
+      max-width: 950px;
+      margin: 25px auto 0 auto;
       background: var(--card-bg);
       border-radius: 12px;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
       border: 1px solid var(--border);
-      overflow: hidden;
+      padding: 30px;
     }
-
-    header {
-      background: var(--primary);
-      color: white;
-      padding: 24px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    header h1 { font-size: 24px; font-weight: 800; }
-    header p { font-size: 14px; color: #bfdbfe; margin-top: 4px; }
-
-    .timer-badge {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .content-area { padding: 30px; }
 
     .setup-section { margin-bottom: 25px; }
 
@@ -83,15 +86,15 @@
 
     .grid-options {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 10px;
     }
 
     .topics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       gap: 8px;
-      max-height: 480px;
+      max-height: 440px;
       overflow-y: auto;
       padding: 10px;
       background: #f8fafc;
@@ -108,8 +111,8 @@
       border: 1px solid var(--border);
       cursor: pointer;
       font-size: 13.5px;
-      transition: all 0.2s;
       user-select: none;
+      transition: all 0.15s;
     }
 
     .checkbox-label:hover, .radio-label:hover {
@@ -135,7 +138,7 @@
       font-family: inherit;
       cursor: pointer;
       transition: background 0.2s;
-      margin-top: 25px;
+      margin-top: 20px;
     }
 
     .btn-main:hover { background: var(--primary-hover); }
@@ -245,7 +248,7 @@
       margin-bottom: 25px;
     }
 
-    .results-card h2 { color: #15803d; font-size: 28px; margin-bottom: 8px; }
+    .results-card h2 { color: #15803d; font-size: 26px; margin-bottom: 8px; }
 
     .score-circle {
       font-size: 36px;
@@ -258,83 +261,80 @@
 </head>
 <body>
 
+<header>
+  <div>
+    <h1>CCNA Exam Simulator</h1>
+    <p>סילבוס רשמי: 37 נושאי PingMyNetwork</p>
+  </div>
+  <div class="timer-badge" id="timer-display">--:--</div>
+</header>
+
 <div class="container">
-  <header>
-    <div>
-      <h1>CCNA Exam Simulator</h1>
-      <p>תרגול והכנה למבחן לפי 37 נושאי PingMyNetwork הרשמיים</p>
+  <!-- מסך הגדרות -->
+  <div id="setup-view">
+    <div class="setup-section">
+      <h3>1. כמות שאלות במבחן (ללא חזרות)</h3>
+      <div class="grid-options">
+        <label class="radio-label"><input type="radio" name="q-count" value="10"> 10 שאלות</label>
+        <label class="radio-label"><input type="radio" name="q-count" value="25"> 25 שאלות</label>
+        <label class="radio-label"><input type="radio" name="q-count" value="50"> 50 שאלות</label>
+        <label class="radio-label"><input type="radio" name="q-count" value="100"> 100 שאלות</label>
+        <label class="radio-label"><input type="radio" name="q-count" value="all" checked> כל השאלות הייחודיות</label>
+      </div>
     </div>
-    <div class="timer-badge" id="timer-display">--:--</div>
-  </header>
 
-  <div class="content-area">
-    <!-- מסך הגדרות -->
-    <div id="setup-view">
-      <div class="setup-section">
-        <h3>1. בחר כמות שאלות במבחן</h3>
-        <div class="grid-options">
-          <label class="radio-label"><input type="radio" name="q-count" value="10"> 10 שאלות</label>
-          <label class="radio-label"><input type="radio" name="q-count" value="25"> 25 שאלות</label>
-          <label class="radio-label"><input type="radio" name="q-count" value="50" checked> 50 שאלות</label>
-          <label class="radio-label"><input type="radio" name="q-count" value="100"> 100 שאלות (מבחן מלא)</label>
-          <label class="radio-label"><input type="radio" name="q-count" value="all"> כל השאלות שנבחרו</label>
+    <div class="setup-section">
+      <h3>2. הגבלת זמן (טיימר עליון קבוע)</h3>
+      <div class="grid-options">
+        <label class="radio-label"><input type="radio" name="time-limit" value="15"> 15 דקות</label>
+        <label class="radio-label"><input type="radio" name="time-limit" value="30"> 30 דקות</label>
+        <label class="radio-label"><input type="radio" name="time-limit" value="60"> 60 דקות</label>
+        <label class="radio-label"><input type="radio" name="time-limit" value="120" checked> 120 דקות (תואם CCNA)</label>
+        <label class="radio-label"><input type="radio" name="time-limit" value="0"> ללא הגבלת זמן</label>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3>3. בחירת נושאים למבחן (37 נושאים)</h3>
+        <div>
+          <button type="button" onclick="selectAllTopics(true)" style="font-size: 12px; padding: 4px 8px; cursor: pointer;">בחר הכל</button>
+          <button type="button" onclick="selectAllTopics(false)" style="font-size: 12px; padding: 4px 8px; cursor: pointer;">נקה הכל</button>
         </div>
       </div>
-
-      <div class="setup-section">
-        <h3>2. הגבלת זמן (טיימר)</h3>
-        <div class="grid-options">
-          <label class="radio-label"><input type="radio" name="time-limit" value="15"> 15 דקות</label>
-          <label class="radio-label"><input type="radio" name="time-limit" value="30"> 30 דקות</label>
-          <label class="radio-label"><input type="radio" name="time-limit" value="60"> 60 דקות</label>
-          <label class="radio-label"><input type="radio" name="time-limit" value="120" checked> 120 דקות (תואם CCNA)</label>
-          <label class="radio-label"><input type="radio" name="time-limit" value="0"> ללא הגבלת זמן</label>
-        </div>
-      </div>
-
-      <div class="setup-section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <h3>3. בחר נושאים למבחן (37 נושאי PingMyNetwork)</h3>
-          <div>
-            <button type="button" onclick="selectAllTopics(true)" style="font-size: 12px; padding: 4px 8px; cursor: pointer;">בחר הכל</button>
-            <button type="button" onclick="selectAllTopics(false)" style="font-size: 12px; padding: 4px 8px; cursor: pointer;">נקה הכל</button>
-          </div>
-        </div>
-        <div class="topics-grid" id="topics-container"></div>
-      </div>
-
-      <button class="btn-main" onclick="startExam()">התחל מבחן עכשיו</button>
+      <div class="topics-grid" id="topics-container"></div>
     </div>
 
-    <!-- מסך שאלות -->
-    <div id="exam-view" style="display: none;">
-      <div class="exam-progress">
-        <span id="progress-counter">שאלה 0 מתוך 0</span>
-        <span id="answered-counter">נענו: 0</span>
-      </div>
+    <button class="btn-main" onclick="startExam()">התחל מבחן עכשיו</button>
+  </div>
 
-      <div id="questions-container"></div>
-
-      <button class="btn-main" id="submit-btn" onclick="finishExam()">הגש מבחן ובדוק תוצאות</button>
+  <!-- מסך שאלות -->
+  <div id="exam-view" style="display: none;">
+    <div class="exam-progress">
+      <span id="progress-counter">שאלה 0 מתוך 0</span>
+      <span id="answered-counter">נענו: 0</span>
     </div>
 
-    <!-- מסך תוצאות -->
-    <div id="result-view" style="display: none;">
-      <div class="results-card" id="results-card">
-        <h2>סיום המבחן!</h2>
-        <div class="score-circle" id="final-score">0%</div>
-        <p id="results-summary"></p>
-        <button class="btn-main" style="max-width: 200px; margin: 20px auto 0 auto;" onclick="restart()">מבחן חדש</button>
-      </div>
+    <div id="questions-container"></div>
 
-      <h3 style="margin-bottom: 15px; color: var(--primary);">פירוט תשובות והסברים לפי 3 חלקים:</h3>
-      <div id="review-container"></div>
+    <button class="btn-main" id="submit-btn" onclick="finishExam()">הגש מבחן ובדוק תוצאות</button>
+  </div>
+
+  <!-- מסך תוצאות -->
+  <div id="result-view" style="display: none;">
+    <div class="results-card" id="results-card">
+      <h2>סיום המבחן!</h2>
+      <div class="score-circle" id="final-score">0%</div>
+      <p id="results-summary"></p>
+      <button class="btn-main" style="max-width: 200px; margin: 20px auto 0 auto;" onclick="restart()">מבחן חדש</button>
     </div>
+
+    <h3 style="margin-bottom: 15px; color: var(--primary);">פירוט תשובות והסברים לפי 3 חלקים:</h3>
+    <div id="review-container"></div>
   </div>
 </div>
 
 <script>
-// רשימת 37 הנושאים המדויקת לפי הסילבוס של PingMyNetwork
 const pingMyNetworkTopics = [
   "1. Getting Started",
   "2. LAN Basics",
@@ -375,345 +375,525 @@ const pingMyNetworkTopics = [
   "37. Automation and Programmability"
 ];
 
-// מאגר שאלות מקיף ומדויק
+// מאגר שאלות ללא כפילויות, עם מסיחים מנוסחים באורך שווה כדי למנוע ניחושים
 const questionBank = [
   {
     topicId: 1,
-    q: "מהו התפקיד של שורת הפקודה (CLI) במכשירי רשת בהשוואה לממשק גרפי (GUI)?",
-    options: ["שליטה ישירה, תצורה מהירה ואפשרות לאוטומציה בסקריפטים", "אבטחה פחותה בלבד", "עבודה ללא מערכת הפעלה", "חיבור למסכים בלבד"],
+    q: "באיזה מצב עבודה (CLI Mode) במתג סיסקו נמצאים כאשר שורת הפקודה מסתיימת בתו הסולמית (#)?",
+    options: [
+      "מצב Privileged EXEC Mode",
+      "מצב User EXEC Mode בסיסי",
+      "מצב Global Configuration Mode",
+      "מצב Interface Configuration"
+    ],
     ans: 0,
-    expSimple: "ממשק ה-CLI מאפשר למנהל הרשת להקליד פקודות ישירות למכשיר, להגדיר אותו במדויק ולבצע פעולות חוזרות במהירות.",
-    expAnalogy: "תחשוב על נהיגה ברכב עם גיר ידני במסלול מרוצים: אתה שולט בדיוק מוחלט בכל הילוך ומהירות, לעומת נסיעה ברכב אוטונומי.",
-    expOneLine: "ה-CLI מעניק למנהלי רשת גישה ישירה, מהירה ומלאה לכל תצורות המכשיר."
+    expSimple: "סימן הסולמית מעיד על כניסה עם הרשאות מנהל לאחר הקלדת הפקודה enable.",
+    expAnalogy: "תחשוב על קבלת צרור המפתחות הראשי למשרד שמאפשר לפתוח ארונות ולצפות בכל הדוחות.",
+    expOneLine: "הסמל # מסמן מעבר ל-Privileged EXEC Mode שמאפשר צפייה מלאה בהגדרות ופקודות debug."
   },
   {
     topicId: 2,
-    q: "מה מאפיין רשת מקומית (LAN)?",
-    options: ["רשת המחברת מכשירים באזור גיאוגרפי מוגבל כמו משרד או בניין", "רשת כלל-עולמית שמחברת יבשות", "רשת של לוויינים בלבד", "רשת ללא כבלים כלל"],
+    q: "מה מייחד רשת מקומית (LAN) בהשוואה לרשת מרחבית (WAN)?",
+    options: [
+      "שליטה ניהולית של ארגון יחיד על תשתית פיזית באזור מוגבל",
+      "שימוש בלעדי בכבלי נחושת ללא שום רכיבי סיב אופטי",
+      "רוחב פס מוגבל הנמוך תמיד מזה של חיבורי ספק חיצוני",
+      "ביטול מוחלט של הצורך בכתובות IP לוגיות שכבה 3"
+    ],
     ans: 0,
-    expSimple: "רשת LAN היא רשת תקשורת שמחברת מחשבים ומכשירים שנמצאים קרוב זה לזה, כמו בבית או במשרד.",
-    expAnalogy: "תחשוב על מערכת אינטרקום פנימית בבניין מגורים: היא מאפשרת לכל הדיירים לדבר זה עם זה בתוך הבניין בקלות.",
-    expOneLine: "רשת LAN מחברת התקנים מקומיים בטווח גיאוגרפי מצומצם תחת שליטה ניהולית יחידה."
+    expSimple: "רשת LAN היא רשת פנימית השייכת לאותו עסק או בית ונמצאת בשליטתו המלאה.",
+    expAnalogy: "תחשוב על חצר סגורה של בית פרטי לעומת כביש ארצי ראשי שמנוהל על ידי המדינה.",
+    expOneLine: "רשת LAN פועלת בשטח גיאוגרפי מוגדר ותחת ניהול ישיר של גורם ארגוני יחיד."
   },
   {
     topicId: 3,
-    q: "כיצד מתג (Switch) בונה את טבלת ה-MAC שלו (CAM Table)?",
-    options: ["על ידי בדיקת כתובת ה-MAC של המקור (Source MAC) בכל מסגרת שנכנסת לפורט", "על ידי בדיקת כתובת היעד בלבד", "באמצעות שאילתות DNS", "מנהל הרשת חייב להקליד הכל ידנית"],
+    q: "מה קורה בטבלת ה-MAC (CAM Table) של מתג כאשר הוא מקבל מסגרת מכתובת מקור שכבר קיימת בטבלה אך בפורט אחר?",
+    options: [
+      "הוא מעדכן את הפורט המשויך לכתובת ה-MAC לפורט החדש ומאפס את הטיימר",
+      "הוא מתעלם מהמסגרת לחלוטין ומשאיר את השיוך הישן ללא שינוי",
+      "הוא מכבה את הפורט החדש באופן אוטומטי למצב err-disable",
+      "הוא מוחק את כל טבלת ה-MAC במתג ושולח הודעת ברודקאסט"
+    ],
     ans: 0,
-    expSimple: "בכל פעם שמכשיר שולח הודעה, המתג רושם לעצמו מאיזה שקע היא נכנסה ואיזו כתובת מזהה את השולח.",
-    expAnalogy: "תחשוב על שוער בכניסה למשרד שרושם בפנקס בכל פעם שעובד נכנס: 'דני הגיע כרגע מדלת מספר 2'.",
-    expOneLine: "מתג לומד כתובות MAC דינמית על ידי רישום כתובת המקור של המסגרות הנכנסות."
+    expSimple: "המתג מבין שהמכשיר זז או חובר לשקע חדש, ולכן מעדכן מיד את הכתובת לשקע המעודכן.",
+    expAnalogy: "תחשוב על עובד במשרד שעבר לשבת בחדר אחר: המזכירה פשוט מעדכנת את מספר החדר שלו ברשימה.",
+    expOneLine: "מתג מעדכן את טבלת ה-MAC ומצמיד את הכתובת לפורט החדש שנצפה כדי לשמור על דיוק הניתוב המקומי."
   },
   {
     topicId: 4,
-    q: "באיזו שכבה במודל ה-OSI פועלים פרוטוקולי TCP ו-UDP?",
-    options: ["שכבה 2", "שכבה 3", "שכבה 4 (Transport)", "שכבה 7"],
-    ans: 2,
-    expSimple: "שכבה 4 אחראית על ניהול השיחה והעברת הנתונים בין התוכנות השונות במחשבים בעזרת מספרי Port.",
-    expAnalogy: "תחשוב על שליח שמקבל חבילה שכבר הגיעה לבניין הנכון (שכבה 3), ועכשיו דואג למסור אותה ישירות לידיים של האדם הנכון בקומה 4 (שכבה 4).",
-    expOneLine: "שכבה 4 במודל ה-OSI אחראית על העברת נתונים בין יישומים מקצה לקצה."
+    q: "איזו שכבה במודל שלוש השכבות המסורתי (Core, Distribution, Access) אחראית על חיבור תחנות קצה?",
+    options: [
+      "שכבת ה-Access Layer",
+      "שכבת ה-Core Layer",
+      "שכבת ה-Distribution Layer",
+      "שכבת ה-Transport Layer"
+    ],
+    ans: 0,
+    expSimple: "שכבת ה-Access היא השכבה הנמוכה שמספקת שקעי רשת פיזיים למחשבים, טלפונים ומדפסות.",
+    expAnalogy: "תחשוב על פקידי הקבלה בלובי של בניין שמקבלים את האורחים ומחברים אותם פנימה.",
+    expOneLine: "שכבת ה-Access מספקת גישה ישירה להתקני הקצה אל תוך תשתית הרשת הארגונית."
   },
   {
     topicId: 5,
-    q: "מהו היתרון המרכזי של כבל סיב אופטי Single-Mode על פני Multi-Mode?",
-    options: ["טווח שידור ארוך משמעותית עם מינימום פיזור אות", "ליבה רחבה לנוריות LED", "עלות אפסית", "גמישות פיזית כמו גומי"],
+    q: "מהו התקן המאפשר אספקת חשמל על גבי כבלי רשת (PoE) בהספק של עד 30W לפורט?",
+    options: [
+      "תקן IEEE 802.3at (המוכר כ-PoE+)",
+      "תקן IEEE 802.3af הקלאסי",
+      "תקן IEEE 802.1Q לתיוג",
+      "תקן IEEE 802.3ad לאיגוד"
+    ],
     ans: 0,
-    expSimple: "סיב Single-Mode משתמש בקרן לייזר צרה ומדויקת שעוברת דרך ליבה דקה מאוד, מה שמאפשר להגיע למרחקים של עשרות קילומטרים.",
-    expAnalogy: "תחשוב על הצבעת לייזר מרוכזת שמגיעה ישירות לקצה השני של העמק, לעומת פנס רגיל שמפזר אור ודועך אחרי כמה מטרים.",
-    expOneLine: "Single-Mode מאפשר שידור למרחקים ארוכים במיוחד הודות לליבה צרה ואלומת אור יחידה."
+    expSimple: "תקן 802.3at (הנקרא PoE+) מספק כוח חשמלי חזק יותר מכבל הרשת למכשירים כמו מצלמות וטלפונים.",
+    expAnalogy: "תחשוב על שדרוג מטען טלפון ממטען איטי פשוט למטען מהיר המספק הספק כפול לאותו המכשיר.",
+    expOneLine: "תקן IEEE 802.3at מספק הספק מוגבר של עד 30W למכשירי קצה על גבי תשתית כבילת נחושת קיימת."
   },
   {
     topicId: 6,
-    q: "מהו התפקיד של פרוטוקול ARP ברשת מקומית?",
-    options: ["למפות כתובת IP ידועה לכתובת ה-MAC הפיזית של היעד", "להקצות כתובות IP אוטומטית", "למנוע לולאות בין מתגים", "לסנכרן שעונים"],
+    q: "מהי מטרת לחיצת היד המשולשת (Three-Way Handshake) בפרוטוקול TCP?",
+    options: [
+      "סנכרון מספרי סידרה (SYN) ואישור (ACK) להקמת תקשורת אמינה",
+      "הקצאת כתובות IP זמניות להתקני קצה באמצעות שידור",
+      "מניעת לולאות מיתוג בין מתגים מרובים בשכבה 2",
+      "אימות זהות המשתמש מול שרת ה-Radius המרכזי"
+    ],
     ans: 0,
-    expSimple: "ARP מגלה את כתובת ה-MAC הפיזית של המחשב שאליו רוצים לשלוח מידע, כשיודעים רק את כתובת ה-IP שלו.",
-    expAnalogy: "תחשוב שאתה נכנס לכיתה ויודע שאתה מחפש את התלמיד שקוראים לו 'דני' (כתובת IP), אז אתה שואל בקול: 'מי זה דני ומה תעודת הזהות שלך?' (כתובת MAC).",
-    expOneLine: "ARP מתרגם כתובת לוגית (IP) לכתובת פיזית (MAC) ברשת המקומית."
+    expSimple: "תהליך בדיקה הדדי שבו שני המחשבים מוודאים שהצד השני מוכן להעברת מידע לפני שהיא מתחילה.",
+    expAnalogy: "תחשוב על שיחת טלפון: אתה אומר 'הלו?', הצד השני עונה 'שומע אותי?', ואתה משיב 'כן, בוא נדבר'.",
+    expOneLine: "לחיצת היד המשולשת מתאמת מספרי רצף ויוצרת חיבור אמין ומבוקר בין שני התקנים."
   },
   {
     topicId: 7,
-    q: "מהו תקן IEEE 802.1Q?",
-    options: ["תקן בינלאומי לתיוג מסגרות VLAN על גבי קווי Trunk", "תקן להקצאת כתובות אלחוטיות", "פרוטוקול למניעת לולאות", "פרוטוקול ניתוב"],
+    q: "איזה טווח של VLANs נשמר בקובץ הנתונים הייעודי vlan.dat במתגי סיסקו כברירת מחדל?",
+    options: [
+      "טווח ה-Normal Range (מ-1 עד 1005)",
+      "טווח ה-Extended Range (מ-1006 עד 4094)",
+      "אך ורק VLAN 1 בלבד",
+      "כל הטווח השלם מ-1 עד 4094"
+    ],
     ans: 0,
-    expSimple: "זהו התקן שמדביק תגית קטנה על כל פאקטה שנוסעת בכבל משותף, כדי שנדע לאיזו רשת וירטואלית היא שייכת.",
-    expAnalogy: "תחשוב על שקיות דואר שנוסעות באותה משאית, כשעל כל שקית מודבקת תווית צבעונית שמסמנת לאיזה סניף היא מיועדת.",
-    expOneLine: "תקן 802.1Q מוסיף תגית זיהוי למסגרת ה-Ethernet כדי לאפשר העברת מספר VLANs על קו יחיד."
+    expSimple: "הרשתות הווירטואליות הבסיסיות (1 עד 1005) נשמרות בקובץ זיכרון מיוחד במתג ולא בהגדרות הרגילות.",
+    expAnalogy: "תחשוב על פנקס רשימות שמור בכספת מיוחדת, לעומת דפי טיוטה שמונחים סתם על השולחן.",
+    expOneLine: "רשתות בטווח 1–1005 נשמרות בקובץ ה-Flash הפנימי vlan.dat במערכות המתגים."
   },
   {
     topicId: 8,
-    q: "כיצד מוגדר חיבור בתצורת Router-on-a-Stick (ROAS)?",
-    options: ["ממשק פיזי יחיד בראוטר המחולק לתת-ממשקים (Sub-interfaces) עם תיוג dot1q", "חיבור 10 כבלים שונים", "ביטול שכבת הניתוב", "הגדרת שרת DHCP בלבד"],
+    q: "כיצד מתבצע ניתוב בין רשתות VLAN במתג Multilayer (שכבה 3) ללא צורך בנתב חיצוני?",
+    options: [
+      "באמצעות ממשקי SVI וירטואליים המשמשים כשערי ברירת מחדל",
+      "באמצעות הפעלת פרוטוקול DTP במצב Desirable",
+      "באמצעות חיבור כבלי Loopback בין הפורטים השונים",
+      "באמצעות הגדרת Port Security בכל אחד מהפורטים"
+    ],
     ans: 0,
-    expSimple: "מחלקים כבל אחד שמחובר לראוטר לכמה ערוצים וירטואליים, וכל ערוץ מנתב רשת VLAN נפרדת.",
-    expAnalogy: "תחשוב על חלון קבלה יחיד במשרד ממשלתי שממנו פקיד אחד נותן שירות לשלושה תורים שונים לפי צבע הכרטיס שבידם.",
-    expOneLine: "ROAS מנתב בין רשתות VLAN באמצעות חלוקת ממשק ראוטר בודד לתת-ממשקים לוגיים."
+    expSimple: "המתג מייצר לעצמו 'כרטיס רשת פנימי' לכל VLAN ומנתב ביניהם ישירות בתוך השבבים שלו.",
+    expAnalogy: "תחשוב על מעלית פנימית בבניין שמעבירה עובדים ישירות מקומה לקומה בלי לצאת לרחוב.",
+    expOneLine: "מתג שכבה 3 משתמש בממשקי SVI מובנים לצורך ניתוב מהיר בחומרה בין רשתות וירטואליות."
   },
   {
     topicId: 9,
-    q: "מהו פרוטוקול LACP (802.3ad)?",
-    options: ["תקן פתוח לאיגוד דינמי של מספר קווי רשת פיזיים לערוץ לוגי יחיד (EtherChannel)", "פרוטוקול ניתוב דינמי", "מערכת לזיהוי פריצות", "פרוטוקול הצפנה"],
+    q: "מה יקרה אם צד אחד של ה-EtherChannel מוגדר במצב On והצד השני מוגדר במצב LACP Active?",
+    options: [
+      "האיגוד ייכשל מכיוון שמצב On אינו מנהל משא ומתן דינמי",
+      "האיגוד יוקם בהצלחה לאחר 30 שניות של האזנה",
+      "הפורטים יעברו אוטומטית לעבוד בפרוטוקול PAgP",
+      "המתג יבצע אתחול מלא עקב חוסר התאמת הגדרות"
+    ],
     ans: 0,
-    expSimple: "LACP מחבר כמה כבלי רשת ביחד כדי שיפעלו כצינור עבה אחד, ומגדיל את המהירות והגיבוי.",
-    expAnalogy: "תחשוב על חיבור של ארבעה נתיבי כביש צרים לאוטוסטרדה רחבה אחת: התנועה זורמת מהר יותר ואם נתיב אחד נחסם, שאר הנתיבים ממשיכים לעבוד.",
-    expOneLine: "LACP הוא תקן פתוח המאגד מספר קישורים פיזיים לערוץ תקשורת יחיד בעל רוחב פס מוגדל ושרידות."
+    expSimple: "מצב On כופה חיבור בלי לדבר, בעוד LACP מחייב שיחה ואישור. כשהם לא מדברים באותה שיטה, זה נכשל.",
+    expAnalogy: "תחשוב על אדם שמנסה לחתום על חוזה משפטי עם מישהו שמתעקש לפעול בלי חוזים כלל.",
+    expOneLine: "מצב On כופה איגוד ללא פרוטוקול בקרה ואינו תואם למצבי המשא ומתן של LACP."
   },
   {
     topicId: 10,
-    q: "מהו שובר השוויון בבחירת Root Bridge ב-STP במידה וה-Priority זהה?",
-    options: ["כתובת ה-MAC הנמוכה ביותר של המתג", "כתובת ה-IP הגבוהה ביותר", "מספר הפורטים", "מהירות המעבד"],
+    q: "איזה מצב פורט ב-STP קלאסי (802.1D) קולט הודעות BPDU ומאזין אך אינו לומד כתובות MAC ואינו מעביר מידע?",
+    options: [
+      "מצב Listening",
+      "מצב Learning",
+      "מצב Forwarding",
+      "מצב Disabled"
+    ],
     ans: 0,
-    expSimple: "אם לשני מתגים יש את אותה עדיפות, המתג עם מספר ה-MAC הקטן יותר מנצח ונבחר למנהל הרשת.",
-    expAnalogy: "תחשוב על שני מועמדים שקיבלו אותו ציון במבחן, וההכרעה ביניהם נעשית לפי מספר תעודת הזהות הנמוך יותר.",
-    expOneLine: "במקרה של שוויון ב-Priority, המתג בעל כתובת ה-MAC הנמוכה ביותר ייבחר ל-Root Bridge."
+    expSimple: "מצב Listening הוא השלב שבו הפורט רק פותח אוזניים כדי לשמוע אם יש מתגים אחרים בסביבה.",
+    expAnalogy: "תחשוב על אדם שעומד ליד דלת סגורה ומקשיב אם יש מישהו בפנים, עוד לפני שהוא פותח אותה או רושם מי שם.",
+    expOneLine: "במצב Listening הפורט מעבד הודעות BPDU כדי לבחון את מבנה הטופולוגיה ללא לימוד כתובות."
   },
   {
     topicId: 11,
-    q: "מה יבצע מנגנון BPDU Guard כאשר מתקבלת הודעת BPDU בפורט שמוגדר כ-PortFast?",
-    options: ["יכבה את הפורט ויעביר אותו למצב err-disable", "יתעלם מההודעה", "יהפוך את הפורט ל-Root Port", "ימחק את טבלת ה-MAC"],
+    q: "מהי המטרה העיקרית של מנגנון Root Guard במתגי שכבה 2?",
+    options: [
+      "מניעת השתלטות של מתג בלתי מורשה על מעמד ה-Root Bridge",
+      "הגנה מפני הצפת הודעות שידור הנובעות מכשל בחומרה",
+      "הצפנת תעבורת הניהול בין המתגים בקווי ה-Trunk",
+      "בדיקת תקינות של הודעות ה-ARP הנכנסות למתג"
+    ],
     ans: 0,
-    expSimple: "הפורט מכבה את עצמו מיד כדי למנוע לולאה, כי מישהו חיבר מתג לשקע שהיה מיועד רק למחשב רגיל.",
-    expAnalogy: "תחשוב על דלת כניסה של קניון שמיועדת להולכי רגל, שננעלת אוטומטית ברגע שמישהו מנסה להיכנס דרכה עם משאית.",
-    expOneLine: "BPDU Guard משבית פורט קצה ומעביר אותו ל-err-disable בעת קבלת BPDU למניעת לולאות."
+    expSimple: "המנגנון מונע ממישהו לחבר מתג חדש עם עדיפות חזקה שיגנוב את תפקיד המנהל של הרשת.",
+    expAnalogy: "תחשוב על מאבטח שמונע מאדם זר להיכנס לישיבת הנהלה ולהכריז על עצמו כמנכ\"ל החדש.",
+    expOneLine: "Root Guard חוסם פורטים שמקבלים הודעות BPDU עדיפות כדי לשמר את זהות ה-Root Bridge המקורי."
   },
   {
     topicId: 12,
-    q: "כמה כתובות מחשב תקפות קיימות בתת-רשת עם מסכה 255.255.255.224 (/27)?",
-    options: ["30", "32", "14", "62"],
+    q: "מהי כתובת ה-Broadcast של תת-הרשת 192.168.5.128/25?",
+    options: [
+      "192.168.5.255",
+      "192.168.5.129",
+      "192.168.5.191",
+      "192.168.5.254"
+    ],
     ans: 0,
-    expSimple: "במסכה זו יש 32 כתובות בסך הכל, ומורידים שתיים (כתובת רשת וברודקאסט), כך שנשארות 30 כתובות למחשבים.",
-    expAnalogy: "תחשוב על חניון של 32 מקומות, שבו מקום אחד שמור לשומר ומקום אחד לרכב פינוי אשפה – נותרו 30 מקומות פנויים לרכבים רגילים.",
-    expOneLine: "מסכת רשת 27/ מספקת בדיוק 30 כתובות IP תקפות עבור מכשירי קצה."
+    expSimple: "במסכה 25/ גודל הבלוק הוא 128. הרשת מתחילה ב-128 ומסתיימת בכתובת האחרונה האפשרית שהיא 255.",
+    expAnalogy: "תחשוב על ספר בן 256 עמודים שמחולק לשניים: החלק השני מתחיל בעמוד 128 ומסתיים בעמוד 255.",
+    expOneLine: "כתובת השידור (Broadcast) של תת-הרשת 192.168.5.128/25 היא 192.168.5.255."
   },
   {
     topicId: 13,
-    q: "מה מייצג המונח Administrative Distance (AD)?",
-    options: ["מדד האמינות של מקור הניתוב (ככל שהערך נמוך יותר, המסלול אמין יותר)", "רוחב הפס של הקו", "המרחק הפיזי בקילומטרים", "זמן ההשהיה ברשת"],
+    q: "איזה סוג של ניתוב נכנס לטבלת הניתוב עם ה-Administrative Distance הנמוך ביותר?",
+    options: [
+      "מסלול המחובר ישירות לממשק פעיל (Connected)",
+      "מסלול סטטי שהוגדר ידנית על ידי מנהל",
+      "מסלול שנלמד באמצעות פרוטוקול OSPF",
+      "מסלול ברירת מחדל שנלמד משרת DHCP"
+    ],
     ans: 0,
-    expSimple: "זהו מספר שמגדיר לראוטר למי להאמין יותר כשיש כמה פרוטוקולים שמציעים דרכים שונות לאותו יעד.",
-    expAnalogy: "תחשוב על קבלת המלצה על מסעדה: המלצה מחבר קרוב ואמין (ערך 1) תועדף על פני פוסט של אדם זר באינטרנט (ערך 110).",
-    expOneLine: "Administrative Distance מודד את מידת האמינות של מקור המידע הניתtargetי בנתב."
+    expSimple: "נתיב של כבל שמחובר ישירות לשקע בראוטר מקבל עדיפות עליונה עם אמינות מוחלטת (ערך 0).",
+    expAnalogy: "תחשוב על חפץ שנמצא פיזית בתוך היד שלך: אתה בטוח במאה אחוז שהוא שם, בלי להסתמך על שמועות.",
+    expOneLine: "מסלולים מחוברים ישירות (Directly Connected) זוכים ל-AD של 0 המהווה את רמת האמינות הגבוהה ביותר."
   },
   {
     topicId: 14,
-    q: "מהו Floating Static Route?",
-    options: ["נתיב סטטי עם ערך AD גבוה המשמש כגיבוי סמוי ומופעל רק בעת נפילת הקו הראשי", "נתיב שמשתנה כל כמה דקות", "נתיב ללא יעד", "נתיב אלחוטי בלבד"],
+    q: "כיצד מגדירים בנתב סיסקו ניתוב סטטי צף (Floating Static Route)?",
+    options: [
+      "מציינים ערך מרחק מנהלי (AD) גבוה יותר בסיום פקודת הניתוב",
+      "מגדירים את הנתיב ללא ציון כתובת ה-Next Hop כלל",
+      "מפעילים את פקודת floating-enable במצב ההגדרות",
+      "מגדירים את מסכת הרשת עם ערך 0.0.0.0 בלבד"
+    ],
     ans: 0,
-    expSimple: "מסלול חלופי שנמצא בהמתנה שקטה, ומתעורר לעבודה רק כשהמסלול הראשי והמהיר מתקלקל.",
-    expAnalogy: "תחשוב על גנרטור חירום בבית חולים: הוא כבוי כשהחשמל הראשי עובד, אך נכנס לפעולה מיד כשיש הפסקת חשמל.",
-    expOneLine: "נתיב סטטי צף משמש כמסלול גיבוי הודות להגדרת AD גבוה מזה של המסלול הראשי."
+    expSimple: "מוסיפים מספר אמינות גבוה בסוף הפקודה כדי שהראוטר ישתמש בנתיב הזה רק אם הקו הראשי ייפול.",
+    expAnalogy: "תחשוב על שמירת מספר טלפון של נהג מונית לחירום שמתקשרים אליו רק כשהרכב הפרטי במוסך.",
+    expOneLine: "נתיב צף נוצר על ידי קביעת ערך AD ידני הגבוה מזה של המסלול הראשי המשמש בטבלה."
   },
   {
     topicId: 15,
-    q: "בפרוטוקול HSRP, מהו התפקיד של פקודת preempt?",
-    options: ["מאפשרת לנתב בעל עדיפות גבוהה לקחת בחזרה את תפקיד ה-Active לאחר שהתאושש מתקלה", "מכבה את נתב הגיבוי", "מגדירה כתובת וירטואלית", "מבצעת חלוקת עומס"],
+    q: "בפרוטוקול VRRP, איזה תפקיד מקבל הנתב שמחזיק בעדיפות הגבוהה ביותר ומנתב בפועל?",
+    options: [
+      "Master Router",
+      "Active Router",
+      "Backup Router",
+      "Designated Router"
+    ],
     ans: 0,
-    expSimple: "הפקודה גורמת למנהל הראשי לחזור לתפקידו ברגע שהוא חוזר מהיעדרות, במקום להשאיר את הסגן בפיקוד.",
-    expAnalogy: "תחשוב על קברניט ספינה שחזר מתאוששות ממחלה ולוקח מיד את ההגה בחזרה מידי עוזר הקברניט.",
-    expOneLine: "פקודת Preempt מאפשרת לנתב שחזר מנפילה לתפוס מחדש את תפקיד ה-Active במידה וה-Priority שלו עדיף."
+    expSimple: "בפרוטוקול VRRP התקני הנתב הראשי נקרא Master (בשונה מ-HSRP שבו הוא נקרא Active).",
+    expAnalogy: "תחשוב על קברניט ראשי בספינה שמחזיק בהגה כל עוד הוא בתפקיד.",
+    expOneLine: "הנתב הראשי ב-VRRP מוגדר כ-Master Router והוא זה שמעבד ומנתב את תנועת הנתונים."
   },
   {
     topicId: 16,
-    q: "איזה אלגוריתם עומד בבסיס פרוטוקול הניתוב OSPF?",
-    options: ["אלגוריתם דייקסטרה (Shortest Path First - SPF)", "אלגוריתם Bellman-Ford", "DUAL", "אלגוריתם Round-Robin"],
+    q: "מה חייב להיות זהה בין שני נתבי OSPF כדי שיוכלו להפוך לשכנים (Neighbors)?",
+    options: [
+      "ערכי Hello/Dead Timers ומזהה האזור (Area ID)",
+      "כתובות ה-IP המוגדרות בממשקי ה-Loopback",
+      "ערכי ה-Router ID (RID) של שני הנתבים",
+      "גרסת החומרה ודגם המכשיר של יצרן הנתב"
+    ],
     ans: 0,
-    expSimple: "אלגוריתם מתמטי חכם שבונה מפה של כל הדרכים ברשת ומחשב בדיוק את המסלול הקצר והמהיר ביותר לכל מקום.",
-    expAnalogy: "תחשוב על אפליקציית Waze: היא רואה את כל מפת הכבישים והעומסים ומחשבת לך את הנתיב הכי קצר ומהיר להגיע הביתה.",
-    expOneLine: "OSPF משתמש באלגוריתם דייקסטרה לבניית מפת טופולוגיה וחישוב המסלול הטוב ביותר לכל יעד."
+    expSimple: "הנתבים חייבים להסכים על קצב פעימות הדופק ועל שיוך לאותו אזור כדי לתקשר.",
+    expAnalogy: "תחשוב על שני רקדנים שחייבים לרקוד בדיוק באותו קצב מוזיקה כדי לא להיתקל זה בזה.",
+    expOneLine: "הקמת שכנות ב-OSPF מחייבת תאימות מלאה בזמני הטיימרים ובשיוך האזור של הממשקים."
   },
   {
     topicId: 17,
-    q: "לאיזו כתובת Multicast שולחים נתבים רגילים (DROther) עדכוני LSA אל ה-DR וה-BDR?",
-    options: ["224.0.0.6", "224.0.0.5", "224.0.0.1", "255.255.255.255"],
+    q: "מה קורה בבחירות DR ב-OSPF אם לכל הנתבים באותו מקטע יש עדיפות (Priority) זהה של 1?",
+    options: [
+      "הנתב בעל ה-Router ID הגבוה ביותר ייבחר לתפקיד ה-DR",
+      "הנתב בעל כתובת ה-MAC הנמוכה ביותר ייבחר מיד",
+      "לא נבחר DR כלל והרשת עוברת למצב כשל מוחלט",
+      "הנתב שהודלק ראשון נבחר באופן קבוע ללא תלות ב-RID"
+    ],
     ans: 0,
-    expSimple: "הכתובת 224.0.0.6 היא ערוץ מיוחד שבו רק הנתב הראשי והסגן שלו מקשיבים להודעות מהשאר.",
-    expAnalogy: "תחשוב על תיבת פניות סודית שרק למנהל ולסגן שלו יש את המפתח לפתוח ולקרוא את המכתבים שנשלחים אליה.",
-    expOneLine: "נתבי DROther שולחים עדכוני OSPF אל ה-DR וה-BDR באמצעות כתובת ה-Multicast ייעודית 224.0.0.6."
+    expSimple: "כשכולם בעלי אותה עדיפות, הנתב שמחזיק במספר הזיהוי (RID) הגבוה ביותר לוקח פיקוד.",
+    expAnalogy: "תחשוב על תחרות שבה שני אנשים קיבלו ציון זהה, ומי שמבוגר יותר בשנים מקבל את התפקיד.",
+    expOneLine: "ה-Router ID הגבוה ביותר משמש כשובר השוויון הסופי לקביעת ה-DR כאשר העדיפויות שוות."
   },
   {
     topicId: 18,
-    q: "מהו הפורמט של כתובת IPv6?",
-    options: ["128 סיביות המחולקות ל-8 מקטעים הקסדצימליים המופרדים בנקודתיים", "32 סיביות ב-4 אוקטטות", "64 סיביות עשרוניות", "48 סיביות"],
+    q: "כיצד מתבצע קיצור של רצף אפסים עוקבים בכתובת IPv6?",
+    options: [
+      "באמצעות שימוש בנקודתיים כפולות (::) פעם אחת בלבד בכתובת",
+      "באמצעות שימוש בנקודתיים כפולות ללא הגבלה בכל מקום",
+      "באמצעות מחיקת האפסים והשארת רווח ריק במקומם",
+      "באמצעות החלפת האפסים באותיות Z באותו המקטע"
+    ],
     ans: 0,
-    expSimple: "כתובת ארוכה מאוד בת 128 ביטים שמשתמשת במספרים ואותיות, ומספקת כמות אינסופית של כתובות לכל העולם.",
-    expAnalogy: "תחשוב על החלפת מספרי לוחית רישוי של מכוניות מ-7 ספרות לקוד ארוך של ספרות ואותיות כדי שאף פעם לא ייגמרו המספרים לרכבים חדשים.",
-    expOneLine: "כתובת IPv6 מורכבת מ-128 ביטים המיוצגים בערכים הקסדצימליים ומופרדים בנקודתיים."
+    expSimple: "מותר להחליף שרשרת ארוכה של אפסים בסימון '::' רק פעם אחת בכל כתובת כדי למנוע בלבול.",
+    expAnalogy: "תחשוב על קיצור כתובת דואר ארוכה באמצעות ראשי תיבות מוסכמים ומדויקים.",
+    expOneLine: "תקן IPv6 מאפשר לכווץ רצף אפסים יחיד באמצעות הסימון :: פעם אחת בלבד לשמירה על חד-משמעיות."
   },
   {
     topicId: 19,
-    q: "מהו התפקיד המרכזי של שרת DNS ברשת?",
-    options: ["לתרגם שמות תחום (דומיינים קריאים לאדם) לכתובות IP", "לחלק כתובות IP למחשבים", "לסנכרן שעונים", "לנתב פאקטות בין יבשות"],
+    q: "איזה סוג רשומת DNS משמש למיפוי שם תחום (Domain) לכתובת IPv6?",
+    options: [
+      "רשומת AAAA",
+      "רשומת A",
+      "רשומת CNAME",
+      "רשומת PTR"
+    ],
     ans: 0,
-    expSimple: "DNS הופך כתובת אתר קלה לזכירה (כמו google.com) לכתובת המספרים האמיתית של השרת ברשת.",
-    expAnalogy: "תחשוב על ספר אנשי קשר בטלפון: אתה לוחץ על השם 'אמא', והטלפון מחייג את מספר הטלפון המדויק שלה מאחורי הקלעים.",
-    expOneLine: "פרוטוקול DNS מתרגם שמות דומיין ידידותיים למשתמש לכתובות IP לוגיות של שרתים."
+    expSimple: "רשומת A רגילה ממפה ל-IPv4, ורשומת AAAA (ארבע פעמים A) ממפה לכתובת IPv6 הארוכה.",
+    expAnalogy: "תחשוב על ספר טלפונים שמחזיק עמודה מיוחדת למספרי טלפון בינלאומיים ארוכים.",
+    expOneLine: "רשומת AAAA ב-DNS אחראית על תרגום שמות מחשב לכתובות מסוג IPv6."
   },
   {
     topicId: 20,
-    q: "מהו סדר 4 השלבים בתהליך קבלת כתובת IP מפרוטוקול DHCP (DORA)?",
-    options: ["Discover -> Offer -> Request -> Acknowledge", "Discover -> Request -> Offer -> Acknowledge", "Ping -> Offer -> Request -> Finish", "Init -> Offer -> Request -> Done"],
+    q: "איזו הודעת DHCP נשלחת על ידי לקוח במטרה להאריך את תוקף כתובת ה-IP הנוכחית שלו (Lease)?",
+    options: [
+      "הודעת DHCPREQUEST",
+      "הודעת DHCPDISCOVER",
+      "הודעת DHCPOFFER",
+      "הודעת DHCPRELEASE"
+    ],
     ans: 0,
-    expSimple: "המחשב מחפש שרת (Discover), השרת מציע כתובת (Offer), המחשב מבקש אותה (Request), והשרת מאשר סופית (Ack).",
-    expAnalogy: "תחשוב על השכרת דירה: אתה מפרסם שאתה מחפש דירה, בעל הבית מציע הצעה, אתה מודיע שאתה מעוניין בה, ושניכם חותמים על החוזה הסופי.",
-    expOneLine: "תהליך DORA הוא הסדר המובנה שבו לקוח מאתר שרת DHCP ומקבל ממנו תצורת רשת מלאה."
+    expSimple: "המחשב פונה לשרת בהודעת Request ומבקש רשות להמשיך להשתמש באותה הכתובת לעוד זמן.",
+    expAnalogy: "תחשוב על שוכר שפונה לבעל הבית חודש לפני סוף החוזה ומבקש להאריך את השכירות בשנה נוספת.",
+    expOneLine: "הודעת DHCPREQUEST משמשת את הלקוח הן לקבלת כתובת חדשה והן לחידוש תוקף חוזה קיים."
   },
   {
     topicId: 21,
-    q: "מה מאפשר מנגנון PAT (Port Address Translation / NAT Overload)?",
-    options: ["שיתוף כתובת IP ציבורית אחת בין עשרות מכשירים פרטיים בעזרת מספרי פורט שונים", "תרגום כתובות IPv6 בלבד", "ביטול חומת האש", "חסימת גלישה"],
+    q: "מהי המטרה של Static NAT?",
+    options: [
+      "מיפוי קבוע של כתובת IP פרטית אחת לכתובת ציבורית אחת עבור שרתים",
+      "שיתוף כתובת ציבורית יחידה עבור אלפי מחשבי גלישה",
+      "חסימת גישה מוחלטת מכל כתובת חיצונית באינטרנט",
+      "חלוקת כתובות דינמית המשתנה בכל הפעלה מחדש"
+    ],
     ans: 0,
-    expSimple: "PAT מאפשר לכל הטלפונים והמחשבים בבית לגלוש באינטרנט בו-זמנית דרך כתובת ציבורית יחידה שהספק נתן לראוטר.",
-    expAnalogy: "תחשוב על בניין משרדים שבו לכל העובדים יש את אותו מספר טלפון חיצוני של המרכזייה, אך לכל עובד יש שלוחה פנימית ייחודית.",
-    expOneLine: "PAT מאפשר ריבוי משתמשים בעלי כתובות פרטיות לגלוש דרך כתובת IP ציבורית יחידה באמצעות מספרי Port ייחודיים."
+    expSimple: "חיבור קבוע בין כתובת פנימית לכתובת חיצונית אחת, שמאפשר לאנשים מבחוץ להגיע תמיד לשרת.",
+    expAnalogy: "תחשוב על מספר טלפון ישיר שמגיע ישר לשולחן של מנכ\"ל החברה ללא מעבר במרכזייה.",
+    expOneLine: "Static NAT מייצר התאמה קבועה של אחד-לאחד בין כתובת פנימית לכתובת חיצונית ייעודית."
   },
   {
     topicId: 22,
-    q: "מהו VRF (Virtual Routing and Forwarding)?",
-    options: ["יצירת טבלאות ניתוב מבודדות ועצמאיות מרובות בתוך נתב פיזי יחיד", "שכפול פיזי של נתבים", "פרוטוקול אלחוטי", "מערכת קירור"],
+    q: "כיצד מסייעת טכנולוגיית VRF בארגונים מרובי מחלקות או ספקי שירות?",
+    options: [
+      "היא מאפשרת הפרדה מוחלטת בין טבלאות ניתוב ושימוש בכתובות IP חופפות",
+      "היא מונעת צורך בשימוש במסכות רשת בכל הנתבים ברשת",
+      "היא מבטלת את הצורך בהגדרת סיסמאות כניסה למכשירים",
+      "היא מגבילה את רוחב הפס של המשתמשים למהירות בסיסית"
+    ],
     ans: 0,
-    expSimple: "טכנולוגיה שמאפשרת לפצל ראוטר אחד לכמה ראוטרים וירטואליים שאינם רואים זה את זה, בדיוק כמו VLAN במתגים.",
-    expAnalogy: "תחשוב על בניין משרדים שבו יש שתי חברות מתחרות: לשתיהן יש מעליות ומסדרונות נפרדים לחלוטין בתוך אותו מבנה, ואף אחת לא יכולה להיכנס לשטח של השנייה.",
-    expOneLine: "VRF מאפשר יצירת מספר טבלאות ניתוב נפרדות ומבודדות בתוך נתב יחיד."
+    expSimple: "היא מאפשרת לשתי מחלקות שונות להשתמש בדיוק באותן כתובות בלי שתהיה התנגשות ביניהן.",
+    expAnalogy: "תחשוב על שתי דירות נפרדות באותו בניין שלשתיהן יש חדר שנקרא 'חדר שינה 1', בלי שזה יפריע זו לזו.",
+    expOneLine: "VRF מאפשר בידוד מוחלט של נתיבים ותומך במרחבי כתובות חופפים באותה תשתית חומרה."
   },
   {
     topicId: 23,
-    q: "מה מאפיין את הכלל האחרון הסמוי בכל רשימת גישה (ACL)?",
-    options: ["כלל חסימה סמוי (Implicit Deny Any) החוסם כל תעבורה שלא אושרה במפורש", "אישור גורף לכל התעבורה", "הפעלת הצפנה", "שליחת התראת מייל"],
+    q: "היכן מומלץ למקם Standard ACL ברשת לפי עקרונות התכנון של סיסקו?",
+    options: [
+      "קרוב ככל האפשר ליעד התעבורה (Closest to Destination)",
+      "קרוב ככל האפשר למקור התעבורה (Closest to Source)",
+      "אך ורק על ממשקי ה-Loopback בנתב המרכזי",
+      "על גבי כל הפורטים של מתגי ה-Access בארגון"
+    ],
     ans: 0,
-    expSimple: "בסוף כל רשימת אבטחה יש חוק נסתר שזורק לפח כל הודעה שלא קיבלה אישור מפורש בחוקים שמעליו.",
-    expAnalogy: "תחשוב על מועדון עם רשימת מוזמנים סגורה: אם השם שלך לא כתוב במפורש בדף של המאבטח, אתה נשאר בחוץ.",
-    expOneLine: "בסוף כל רשימת ACL קיים כלל Implicit Deny מובנה שחוסם כל מה שלא הותר קודם לכן."
+    expSimple: "רשימה רגילה בודקת רק מקור, ולכן שמים אותה ליד היעד כדי לא לחסום בטעות גישה למקומות אחרים.",
+    expAnalogy: "תחשוב על מחסום בכניסה למשרד הספציפי במקום לסגור את שער הכניסה הראשי לכל הבניין.",
+    expOneLine: "Standard ACL ממוקמת קרוב ליעד כדי למנוע חסימה בלתי רצויה של תנועה ליעדים תקינים בדרך."
   },
   {
     topicId: 24,
-    q: "מדוע פרוטוקול SSH מועדף על פני Telnet לניהול מכשירי רשת?",
-    options: ["SSH מצפין את כל התעבורה כולל הסיסמאות, בעוד Telnet מעביר הכל בטקסט גלוי (Cleartext)", "SSH מהיר יותר פי 100", "Telnet עובד רק ב-IPv6", "SSH אינו דורש סיסמה"],
+    q: "איזו פקודה מצפינה את כל הסיסמאות המופיעות בטקסט גלוי בקובץ התצורה בנתב סיסקו?",
+    options: [
+      "service password-encryption",
+      "enable secret level 15",
+      "crypto key generate rsa",
+      "ip ssh version 2"
+    ],
     ans: 0,
-    expSimple: "SSH שומר על הסיסמאות וההגדרות שלך נעולות ומוצפנות, כך שמי שמאזין לכבל לא יכול לגנוב אותן.",
-    expAnalogy: "תחשוב על שליחת מכתב סודי בכספת נעולה עם קוד (SSH), לעומת כתיבת הסוד על גבי גלויה פתוחה שכל הדוורים יכולים לקרוא (Telnet).",
-    expOneLine: "SSH מאבטח את תקשורת הניהול באמצעות הצפנה חזקה, בניגוד ל-Telnet הפגיע."
+    expSimple: "פקודה שמערבלת את כל הסיסמאות הפשוטות בקובץ כדי שמי שמציץ במסך לא יראה אותן.",
+    expAnalogy: "תחשוב על כיסוי פתק שכתוב עליו קוד סודי בכתב סתרים שאי אפשר לקרוא במבט חטוף.",
+    expOneLine: "הפקודה service password-encryption מצפינה ב-Type 7 סיסמאות גלויות בקובץ התצורה."
   },
   {
     topicId: 25,
-    q: "מהו התפקיד של מנגנון DHCP Snooping במתגי שכבה 2?",
-    options: ["חסימת שרתי DHCP פיראטיים על ידי הגדרת פורטים כ-Trusted ו-Untrusted", "האצת חלוקת הכתובות", "ביטול שירותי DNS", "חסימת פורטי מחשבים"],
+    q: "מהי מתקפת MAC Flooding ואיזה מנגנון נועד לבלום אותה במתג?",
+    options: [
+      "הצפת טבלת ה-MAC בכתובות מזויפות, והמנגנון המגן הוא Port Security",
+      "שליחת פאקטות IP פגומות, והמנגנון המגן הוא Loop Guard",
+      "התחזות לשרת שמות, והמנגנון המגן הוא Dynamic ARP Inspection",
+      "שידור מסגרות BPDU, והמנגנון המגן הוא Root Guard בלבד"
+    ],
     ans: 0,
-    expSimple: "המנגנון מוודא שרק שרת ה-DHCP האמיתי של הארגון רשאי לחלק כתובות IP למחשבים, וחוסם שרתים מתחזים.",
-    expAnalogy: "תחשוב על שומר בכניסה לאירוע שמסמן מי המלצרים המורשים להגיש שתייה, ומונע מכל אדם זר לחלק משקאות לאורחים.",
-    expOneLine: "DHCP Snooping מגן מפני שרתי DHCP מתחזים ומספק שכבת אימות לחלוקת כתובות ברשת."
+    expSimple: "התוקף ממלא את זיכרון המתג בכתובות זבל כדי להפיל אותו למצב האזנה, ו-Port Security עוצר את זה.",
+    expAnalogy: "תחשוב על אדם שממלא את תיבות הדואר של כל הבניין בעלונים ריקים כדי שלא יישאר מקום לדואר אמיתי.",
+    expOneLine: "Port Security מגביל את מספר הכתובות המורשות בפורט ובכך מונע מתקפות הצפת טבלת MAC."
   },
   {
     topicId: 26,
-    q: "מהו ההבדל העיקרי בין פרוטוקול CDP לפרוטוקול LLDP?",
-    options: ["CDP הוא פרוטוקול קנייני של סיסקו, בעוד LLDP הוא תקן בינלאומי פתוח (IEEE 802.1AB)", "LLDP פועל רק באלחוט", "CDP מצפין נתונים", "אין ביניהם שום הבדל"],
+    q: "באיזה רובד (Layer) פועל פרוטוקול LLDP (IEEE 802.1AB)?",
+    options: [
+      "שכבה 2 (Data Link Layer)",
+      "שכבה 3 (Network Layer)",
+      "שכבה 4 (Transport Layer)",
+      "שכבה 7 (Application Layer)"
+    ],
     ans: 0,
-    expSimple: "שני הפרוטוקולים מגלים מי השכן שמחובר בקצה הכבל, אך CDP עובד רק בציוד של סיסקו ו-LLDP עובד בכל הציוד בעולם.",
-    expAnalogy: "תחשוב על שפה פנימית שרק בני משפחה אחת מבינים (CDP), לעומת אנגלית בינלאומית שמאפשרת לדבר עם כל אדם בעולם (LLDP).",
-    expOneLine: "CDP מיועד לציוד סיסקו בלבד, בעוד LLDP הוא תקן פתוח לזיהוי שכנים ישירים ברשת שכבה 2."
+    expSimple: "פרוטוקול LLDP פועל ישירות מעל הכבל הפיזי בשכבה 2 ואינו זקוק לכתובות IP כדי לעבוד.",
+    expAnalogy: "תחשוב על לחיצת יד ישירה בין שני אנשים שנפגשים פנים אל פנים בלי צורך בטלפון או מייל.",
+    expOneLine: "פרוטוקול LLDP פועל בשכבה 2 ומאפשר גילוי הדדי של התקנים שכנים באותו מקטע פיזי."
   },
   {
     topicId: 27,
-    q: "מדוע סנכרון שעונים באמצעות NTP הוא קריטי ברשתות תקשורת?",
-    options: ["כדי שיומני הרישום (Syslog) ואירועי האבטחה יהיו בעלי חותמת זמן מתואמת ומדויקת", "כדי שהמתג לא יתכבה", "כדי לחסוך חשמל בלילה", "כדי להאיץ את הגלישה"],
+    q: "מהי רמת החומרה (Severity Level) הנמוכה והמפורטת ביותר ביומני רישום מסוג Syslog?",
+    options: [
+      "רמה 7 (Debugging)",
+      "רמה 0 (Emergency)",
+      "רמה 4 (Warning)",
+      "רמה 1 (Alert)"
+    ],
     ans: 0,
-    expSimple: "NTP מוודא שלכל המכשירים יש בדיוק את אותה שעה, כדי שכשיש תקלה או פריצה נוכל להבין בדיוק מה קרה ומתי.",
-    expAnalogy: "תחשוב על חוקרי משטרה שבודקים מצלמות אבטחה מזוויות שונות: אם השעון בכל מצלמה מראה שעה אחרת, אי אפשר לחבר את רצף האירועים.",
-    expOneLine: "פרוטוקול NTP מסנכרן את שעוני מכשירי הרשת ומאפשר ניתוח מדויק של יומני אירועים ואבטחה."
+    expSimple: "רמה 7 היא הרמה שמציגה את כל המידע המפורט והעמוק ביותר לצורכי איתור תקלות עדינות.",
+    expAnalogy: "תחשוב על צילום בווידאו בהילוך איטי מאוד שמציג כל תנועה ופרט קטן ביותר שהתרחשו.",
+    expOneLine: "רמה 7 ב-Syslog מיועדת ל-Debugging ומספקת פירוט טכני מלא על פעולת התהליכים במכשיר."
   },
   {
     topicId: 28,
-    q: "מה תפקידן של הודעות SNMP Trap?",
-    options: ["שליחת התראה אוטומטית ויזומה מהמכשיר אל שרת הניהול בעת התרחשות אירוע חריג", "חסימת פורטים חשודים", "איפוס המכשיר מרחוק", "סריקת וירוסים"],
+    q: "איזו גרסה של פרוטוקול SNMP הוסיפה תמיכה מובנית בהצפנה ואימות משתמשים חזק?",
+    options: [
+      "SNMPv3",
+      "SNMPv1",
+      "SNMPv2c",
+      "SNMPv4"
+    ],
     ans: 0,
-    expSimple: "הודעה שהמתג שולח מיד למנהל הרשת כשיש בעיה (כמו כבל שנקרע או התחממות), בלי לחכות שישאלו אותו.",
-    expAnalogy: "תחשוב על אזעקת עשן בבניין: היא לא מחכה שתתקשר לבדוק אם הכל בסדר, אלא מצפצפת ושולחת התראה ברגע שיש עשן.",
-    expOneLine: "הודעות SNMP Trap מדווחות באופן מיידי ויזום לשרת הניטור על אירועים חריגים במכשיר."
+    expSimple: "גרסה 3 של SNMP היא הראשונה שנעלה את המידע בהצפנה ומנעה מעקב וזיוף פקודות ניטור.",
+    expAnalogy: "תחשוב על מעבר מנעול פשוט של יומן אישי לכספת דיגיטלית עם טביעת אצבע וקוד סודי.",
+    expOneLine: "SNMPv3 מספק אבטחה מקיפה באמצעות מודלים של אימות מאובטח והצפנת מידע."
   },
   {
     topicId: 29,
-    q: "מה קורה לקובץ ה-Running-config בנתב בעת הפסקת חשמל פתאומית אם לא נשמר?",
-    options: ["הוא נמחק לחלוטין מכיוון שהוא מאוחסן בזיכרון הנדיף (RAM)", "הוא נשמר אוטומטית בדיסק", "הוא עולה לענן", "הוא נשמר ב-ROM"],
+    q: "איזה רכיב חומרה בנתב מאחסן את קובץ ה-Startup-config באופן שאינו נמחק בעת כיבוי?",
+    options: [
+      "זיכרון NVRAM",
+      "זיכרון RAM",
+      "זיכרון ROM",
+      "מעבד הנתב (CPU)"
+    ],
     ans: 0,
-    expSimple: "כל ההגדרות שלא שמרת בפקודה `write` או `copy run start` יאבדו מיד, כי ה-RAM נמחק כשאין חשמל.",
-    expAnalogy: "תחשוב שכתבת מסמך וורד חשוב במשך שעתיים ולא לחצת על כפתור שמירה, ואז פתאום נכבה המחשב.",
-    expOneLine: "ה-Running-config שמור בזיכרון ה-RAM ונמחק כליל בעת אתחול או ניתוק חשמל אלא אם נשמר ל-NVRAM."
+    expSimple: "זיכרון ה-NVRAM שומר את הקובץ שנשמר בעזרת סוללה פנימית גם כשמוציאים את התקע מהחשמל.",
+    expAnalogy: "תחשוב על שמירת מסמך בדיסק און קי לעומת השארתו פתוח על המסך במחשב שנכבה פתאום.",
+    expOneLine: "זיכרון ה-NVRAM מאחסן את תצורת האתחול (Startup-config) בצורה בלתי נדיפה."
   },
   {
     topicId: 30,
-    q: "מהם שלושת המאפיינים העיקריים שפוגעים באיכות שיחות קול (VoIP) ברשת?",
-    options: ["השהיה (Latency), שיהוק/ריצוד (Jitter) ואיבוד חבילות (Packet Loss)", "רוחב פס גבוה בלבד", "שימוש בכבלי נחושת", "חוסר במספרי IP"],
+    q: "מה מייצג המונח Jitter ברשתות תקשורת ומדוע הוא מזיק לתעבורת VoIP?",
+    options: [
+      "תנודתיות ושינויים בזמני ההשהיה בין פאקטות עוקבות הגורמים לקטיעות שמע",
+      "ירידה קבועה בקצב רוחב הפס הכולל של ממשק הרשת הראשי",
+      "שינוי אקראי של כתובות המקור והיעד בכותרת ה-IP",
+      "התחממות של כבלי הנחושת עקב תעבורת נתונים רציפה"
+    ],
     ans: 0,
-    expSimple: "עיכובים בזמן ההגעה, שינויים בקצב ופאקטות שהולכות לאיבוד גורמים לשיחת טלפון להישמע מקוטעת ורובוטית.",
-    expAnalogy: "תחשוב על שיחת וידאו עם חבר שבה לפעמים התמונה קופאת, לפעמים הקול מגיע בדיליי של 5 שניות ולפעמים מילים שלמות נעלמות.",
-    expOneLine: "מנגנוני QoS נועדו להתמודד עם השהיה, ריצוד ואיבוד חבילות בתעבורה רגישה בזמן אמת."
+    expSimple: "שיהוק (Jitter) הוא מצב שבו חלק מהחבילות מגיעות מהר וחלק לאט, מה שיוצר קול מקוטע.",
+    expAnalogy: "תחשוב על אדם שמדבר במקצב לא אחיד: לפעמים רץ מהר ולפעמים עוצר לשלוש שניות באמצע מילה.",
+    expOneLine: "Jitter מודד את חוסר האחידות בזמני השהיית הפאקטות ופוגע ישירות באיכות שיחות בזמן אמת."
   },
   {
     topicId: 31,
-    q: "איזה מנגנון QoS מעכב פאקטות בתור כדי להחליק את קצב השידור ולהתאימו למגבלה מוגדרת?",
-    options: ["Shaping (עיצוב תעבורה)", "Policing (שיטור)", "Dropping", "Marking"],
+    q: "מה מבצע מנגנון ה-Policing ב-QoS כאשר תעבורה חורגת מהקצב המוגדר מראש?",
+    options: [
+      "הוא משליך (Drop) את הפאקטות החורגות מיד או מסמן אותן מחדש ללא השהיה",
+      "הוא שומר אותן בזיכרון מטמון בתור ומחליק את קצב השידור החוצה",
+      "הוא מכפיל את מהירות הפורט הפיזי באופן אוטומטי למניעת עומס",
+      "הוא מחליף את פרוטוקול התעבורה מ-UDP ל-TCP באופן יזום"
+    ],
     ans: 0,
-    expSimple: "Shaping מכניס עודפי מידע למעין תור המתנה זמני ומשחרר אותם בצורה חלקה ויפה, בלי לזרוק אותם לפח.",
-    expAnalogy: "תחשוב על רמזור ביציאה מחניון עמוס שמוציא מכונית אחת בכל 5 שניות כדי לא ליצור פקק פתאומי בכביש הראשי.",
-    expOneLine: "Traffic Shaping משהה ומחליק תנועה חורגת באמצעות תורים במקום להשליך אותה מיד."
+    expSimple: "שיטור (Policing) פשוט חותך וזורק לפח כל מה שעובר את המהירות המותרת, בלי לחכות בתור.",
+    expAnalogy: "תחשוב על שומר קפדן ברכבת שעוצר את השער בבום ברגע שעברו 50 איש, ומי שאחריהם נשאר בחוץ.",
+    expOneLine: "Policing אוכף מגבלת תנועה נוקשה על ידי השלכה מיידית של חבילות החורגות מהקצב המוגדר."
   },
   {
     topicId: 32,
-    q: "מה ההבדל בין תדרי האלחוט 2.4GHz ל-5GHz ב-Wi-Fi?",
+    q: "איזה ערוץ אלחוטי בתדר 2.4GHz אינו חופף לערוצים 1 ו-6?",
     options: [
-      "תדר 2.4GHz מציע טווח כיסוי רחב יותר אך מהירות נמוכה יותר, בעוד 5GHz מהיר יותר עם פחות הפרעות אך טווח קצר יותר",
-      "תדר 5GHz פועל רק מתחת למים",
-      "אין הבדל ביניהם",
-      "2.4GHz מיועד רק למדפסות"
+      "ערוץ 11",
+      "ערוץ 3",
+      "ערוץ 5",
+      "ערוץ 9"
     ],
     ans: 0,
-    expSimple: "התדר 2.4GHz עובר קירות בקלות ומגיע רחוק אך הוא צפוף ואיטי יותר, בעוד 5GHz הוא מהיר מאוד אך מתקשה לעבור קירות עבים.",
-    expAnalogy: "תחשוב על צלילי בס נמוכים של מוזיקה שעוברים דרך קירות הבניין בקלות (2.4GHz), לעומת צלילים גבוהים ועדינים שנשמעים חדים רק בתוך החדר (5GHz).",
-    expOneLine: "2.4GHz מספק טווח רחב וחדירות טובה יותר, בעוד 5GHz מספק מהירות גבוהה וערוצים נקיים מהפרעות."
+    expSimple: "שלושת הערוצים היחידים ב-2.4GHz שלא מפריעים זה לזה הם 1, 6 ו-11.",
+    expAnalogy: "תחשוב על שלושה נתיבים רחבים בכביש שיש ביניהם מרווח בטיחות מלא כך שרכבים לא נוגעים זה בזה.",
+    expOneLine: "ערוצים 1, 6 ו-11 הם הערוצים הבלתי-חופפים התקניים בתחום התדרים של 2.4GHz."
   },
   {
     topicId: 33,
-    q: "מהו התפקיד של מסגרות בקרה מסוג Beacon ברשתות אלחוטיות?",
-    options: ["לשדר לכל הסביבה את קיומה של הרשת ואת שם ה-SSID שלה באופן קבוע", "להצפין את המידע", "להעביר שיחות טלפון", "לכבות את האנטנה"],
+    q: "מהו התפקיד של מסגרות מסוג RTS/CTS ברשתות אלחוטיות בתקן 802.11?",
+    options: [
+      "תיאום שידור מקדים למניעת התנגשויות עקב בעיית התחנה הנסתרת (Hidden Node)",
+      "הצפנת הסיסמה של הרשת האלחוטית בזמן החיבור הראשוני",
+      "הקצאת כתובות IP דינמיות להתקנים ניידים ללא שרת DHCP",
+      "העברת התקנים באופן שקוף בין נקודות גישה שונות במרחב"
+    ],
     ans: 0,
-    expSimple: "הודעות שהראוטר האלחוטי משדר כל הזמן כדי להגיד לכל הטלפונים בסביבה: 'אני כאן, וזה השם של הרשת שלי'.",
-    expAnalogy: "תחשוב על מגדלור שמנצנץ אור קבוע בלילה כדי שכל הספינות בסביבה יידעו בדיוק איפה החוף נמצא.",
-    expOneLine: "מסגרות Beacon מכריזות ברציפות על נוכחות הרשת האלחוטית ומאפייניה למכשירי הקצה."
+    expSimple: "בקשה ואישור קצרים שמוודאים שהאוויר פנוי לפני שמתחילים לשלוח קובץ גדול, כדי שלא תהיה התנגשות.",
+    expAnalogy: "תחשוב על הרמת יד וקבלת אישור רשות דיבור מהמורה לפני שמתחילים להרצות בכיתה.",
+    expOneLine: "מנגנון RTS/CTS שומר את התווך האלחוטי פנוי לשידור ומונע התנגשויות הנגרמות מתחנות נסתרות."
   },
   {
     topicId: 34,
-    q: "בארכיטקטורת Split-MAC של סיסקו, באיזה פרוטוקול מתקשרים נקודות הגישה (AP) עם בקר האלחוט (WLC)?",
-    options: ["CAPWAP", "OSPF", "STP", "BGP"],
+    q: "באיזה מצב פועלת נקודת גישה מסוג Lightweight AP (LAP) של סיסקו?",
+    options: [
+      "היא נשלטת לחלוטין על ידי בקר אלחוט מרכזי (WLC) באמצעות מנהרת CAPWAP",
+      "היא פועלת כמכשיר עצמאי המוגדר ישירות דרך שורת פקודה מקומית",
+      "היא אינה דורשת חיבור פיזי לשום מתג ברשת הארגונית",
+      "היא משמשת אך ורק כנתב ברירת מחדל לרשתות וירטואליות"
+    ],
     ans: 0,
-    expSimple: "פרוטוקול CAPWAP יוצר מעין מנהרה מאובטחת שמחברת את כל האנטנות של הבניין ישירות למחשב הניהול הראשי.",
-    expAnalogy: "תחשוב על שגרירויות בעולם שמתקשרות עם משרד החוץ הראשי אך ורק דרך קו טלפון מוצפן ומאובטח במיוחד.",
-    expOneLine: "פרוטוקול CAPWAP מאפשר לנקודות הגישה לתקשר ולהעביר נתונים ופקודות ניהול אל ה-WLC."
+    expSimple: "האנטנה משמשת כעיניים ואוזניים בלבד, וכל המוח שמקבל החלטות יושב בבקר הניהול המרכזי.",
+    expAnalogy: "תחשוב על מצלמת אבטחה פשוטה שמשדרת את הווידאו ישירות למוקד שממנו המאבטחים שולטים בה.",
+    expOneLine: "נקודת גישה Lightweight מסתמכת על בקר WLC מרכזי לביצוע הגדרות, מדיניות וניהול תעבורה."
   },
   {
     topicId: 35,
-    q: "איזה תקן הצפנה משמש כבסיס לרשתות אלחוטיות מאובטחות מסוג WPA3?",
-    options: ["GCMP-256 ופרוטוקול SAE למניעת מתקפות מילון", "WEP 64-bit", "DES פשוט", "MD5"],
+    q: "איזה שיפור אבטחה מרכזי מציע תקן WPA3-Personal בהשוואה ל-WPA2?",
+    options: [
+      "מנגנון אימות SAE המגן מפני מתקפות מילון לא מקוונות (Offline Dictionary Attacks)",
+      "ביטול הצורך בהקלדת סיסמה בעת חיבור ראשוני לרשת",
+      "שימוש במפתחות הצפנה קבועים שאינם משתנים לעולם",
+      "חסימה אוטומטית של כל תעבורת הווידאו והקול ברשת"
+    ],
     ans: 0,
-    expSimple: "WPA3 משתמש בהצפנה מתקדמת מאוד שלא מאפשרת לתוקפים לנחש את הסיסמה של הרשת גם אם הם מנסים מיליוני אפשרויות.",
-    expAnalogy: "תחשוב על כספת חכמה שנועלת את עצמה מיד ומחליפה את המנגנון הפנימי שלה אם מישהו מנסה לנחש את הקוד יותר מפעם אחת.",
-    expOneLine: "WPA3 משפר דרמטית את האבטחה האלחוטית בעזרת הצפנת GCMP חזקה ומנגנון אימות SAE."
+    expSimple: "מנגנון חכם שמונע מהאקרים להקליט את החיבור שלך ולנסות לנחש את הסיסמה בבית בעזרת תוכנות פריצה.",
+    expAnalogy: "תחשוב על כספת שמחליפה מנעול אחרי כל סיבוב מפתח שגוי כדי למנוע ניסיונות פריצה שיטתיים.",
+    expOneLine: "פרוטוקול SAE ב-WPA3 מספק הגנה חזקה מפני מתקפות ניחוש סיסמה פסיביות מחוץ לרשת."
   },
   {
     topicId: 36,
-    q: "מה מאפיין את שכבת ה-Core במודל ההיררכי בן 3 השכבות (Access, Distribution, Core)?",
-    options: ["העברת תעבורה מהירה במיוחד (High-speed switching) ללא סינון או מניפולציה של פאקטות", "חיבור מחשבי קצה ישירות", "חלוקת כתובות DHCP בלבד", "הפעלת נקודות גישה"],
+    q: "מהו היתרון המרכזי בארכיטקטורת רשת מסוג Spine-and-Leaf הנפוצה ב-Data Centers?",
+    options: [
+      "כל מתג Leaf מחובר לכל מתגי ה-Spine, מה שמבטיח מרחק השהיה קבוע וצפוי",
+      "היא אינה דורשת שימוש בנתבים כלל ומסתמכת על רכזות ישנות",
+      "היא מבטלת את הצורך בכבילה כפולה ובממשקים מהירים",
+      "היא מיועדת אך ורק עבור חיבורי משתמשים ביתיים"
+    ],
     ans: 0,
-    expSimple: "שכבת הליבה היא עמוד השדרה של הרשת: המטרה היחידה שלה היא להעביר מידע מנקודה א' לנקודה ב' בשיא המהירות בלי להתעכב על בדיקות.",
-    expAnalogy: "תחשוב על רכבת מהירה בין-עירונית שנוסעת ב-300 קמ\"ש בלי לעצור באף תחנה בדרך עד שהיא מגיעה ליעד הסופי.",
-    expOneLine: "שכבת ה-Core מספקת העברת נתונים מהירה ואמינה במיוחד בליבת הרשת הארגונית."
+    expSimple: "כל השרתים נמצאים בדיוק באותו מרחק של שתי קפיצות זה מזה, והמידע זורם במהירות קבועה תמיד.",
+    expAnalogy: "תחשוב על רשת כבישים שבה כל שכונה מחוברת ישר לכל המחלפים הראשיים ללא פקקים באמצע.",
+    expOneLine: "ארכיטקטורת Spine-Leaf מספקת השהיה אחידה ורוחב פס מוגדל עבור תעבורת מזרח-מערב במרכזי נתונים."
   },
   {
     topicId: 37,
-    q: "מהו התפקיד המרכזי של REST API באוטומציה של רשתות תקשורת?",
-    options: ["לאפשר לתכניות וסקריפטים חיצוניים לנהל ולהגדיר מכשירי רשת באמצעות בקשות HTTP סטנדרטיות (JSON/XML)", "להחליף את כבלי הרשת", "להאיץ את מהירות המעבד", "למנוע וירוסים"],
+    q: "איזה סוג של ממשק תכנות (API) מעביר פקודות ניהול מהבקר המרכזי למטה אל מתגי הרשת (Southbound)?",
+    options: [
+      "Southbound API (כדוגמת OpenFlow או NETCONF)",
+      "Northbound API (כדוגמת RESTful APIs מול אפליקציות)",
+      "Eastbound API לתיאום בין מרכזי נתונים שונים",
+      "Westbound API להצפנת תקשורת שרתים פנימית"
+    ],
     ans: 0,
-    expSimple: "ממשק שמאפשר לתוכנות מחשב 'לדבר' ישירות עם מתגים וראוטרים, לקבל מהם מידע ולשנות הגדרות אוטומטית דרך קוד.",
-    expAnalogy: "תחשוב על תפריט במסעדה שדרכו אתה מבקש מנה מהמלצר: ה-API הוא המלצר שמקבל את הבקשה שלך בצורה מסודרת, מביא אותה למטבח ומחזיר לך תשובה.",
-    expOneLine: "REST APIs מאפשרים ניהול ותכנות אוטומטי של מכשירי רשת באמצעות קריאות HTTP ופורמטים סטנדרטיים."
+    expSimple: "ממשק 'דרומי' (Southbound) הוא הצינור שדרכו בקר ה-SDN שולח הוראות למתגים שנמצאים מתחתיו.",
+    expAnalogy: "תחשוב על מנהל עבודה שמוריד הוראות ביצוע ישירות לפועלים בשטח הבנייה.",
+    expOneLine: "Southbound APIs מקשרים בין בקר ה-SDN לבין התקני הרשת הפיזיים לצורך העברת הגדרות ומדיניות."
   }
 ];
 
@@ -760,23 +940,19 @@ function startExam() {
     return;
   }
 
+  // סינון שאלות ייחודיות בלבד
   let filtered = questionBank.filter(q => selectedTopics.includes(q.topicId));
 
   if (filtered.length === 0) {
-    alert('לא נמצאו שאלות התואמות לנושאים שנבחרו.');
+    alert('לא נמצאו שאלות עבור הנושאים שנבחרו.');
     return;
   }
 
   const countChoice = document.querySelector('input[name="q-count"]:checked').value;
-  let targetCount = countChoice === 'all' ? filtered.length : parseInt(countChoice);
+  // ללא שכפול: כמות השאלות היא לכל היותר כמות השאלות הייחודיות הקיימות
+  let targetCount = countChoice === 'all' ? filtered.length : Math.min(parseInt(countChoice), filtered.length);
 
-  // שכפול חכם לדגימה אקראית אם נבחר מספר גבוה ממאגר השאלות הקיים
-  let pool = [...filtered];
-  while (pool.length < targetCount) {
-    pool = pool.concat(filtered);
-  }
-
-  currentQuestions = shuffleArray(pool).slice(0, targetCount);
+  currentQuestions = shuffleArray(filtered).slice(0, targetCount);
   userSelections = {};
 
   const timeLimitMinutes = parseInt(document.querySelector('input[name="time-limit"]:checked').value);
@@ -822,7 +998,7 @@ function renderExamQuestions() {
   const container = document.getElementById('questions-container');
   container.innerHTML = '';
 
-  document.getElementById('progress-counter').textContent = `סה"כ שאלות במבחן: ${currentQuestions.length}`;
+  document.getElementById('progress-counter').textContent = `שאלות במבחן: ${currentQuestions.length}`;
   updateAnsweredCounter();
 
   currentQuestions.forEach((item, index) => {
@@ -835,9 +1011,9 @@ function renderExamQuestions() {
     let html = `
       <div class="question-category">${topicTitle}</div>
       <div class="question-header">${index + 1}. ${item.q}</div>
+      <div class="options-list">
     `;
 
-    html += `<div class="options-list">`;
     const letters = ['א', 'ב', 'ג', 'ד'];
 
     item.options.forEach((opt, optIdx) => {
@@ -851,7 +1027,7 @@ function renderExamQuestions() {
 
     html += `</div>`;
     
-    // תיבת הסבר מובנית לפי 3 חלקים
+    // מבנה שלושת השלבים של ההסבר
     html += `
       <div class="explanation-box" id="exp-${index}">
         <div class="explanation-section">
